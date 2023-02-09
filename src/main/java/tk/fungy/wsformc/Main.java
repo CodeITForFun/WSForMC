@@ -4,6 +4,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.Timer;
 import java.util.logging.Logger;
 
 public final class Main extends JavaPlugin {

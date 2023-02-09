@@ -2,10 +2,10 @@ package tk.fungy.wsformc;
 
 import fi.iki.elonen.NanoHTTPD;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Map;
 
 public class WebServer extends NanoHTTPD {
     private static Integer port = Integer.valueOf(new FileManager().getStringFromConfig("WebServer.port"));
@@ -18,9 +18,10 @@ public class WebServer extends NanoHTTPD {
         super(hostname, port);
     }
     public static boolean running = Boolean.parseBoolean(new FileManager().getStringFromConfig("WebServer.isRunning"));
-
+    private File logFile;
     public WebServer() {
         super(port);
+        logFile = new File(Main.instance.getDataFolder() + "/logs/latest.log");
     }
     //TODO:
     //TODO:   FIX TOGGLE V CONFIGU A CHATE ATD..
@@ -43,12 +44,6 @@ public class WebServer extends NanoHTTPD {
             }
         }
     }
-    public void stopServer() {
-        stop();
-        running = false;
-        FileManager.setStringInConfig("WebServer.isRunning", String.valueOf(false));
-        Main.getInstance().getLogger().warning("Server stopped");
-    }
     @Override
     public Response serve(IHTTPSession session) {
         String uri = session.getUri();
@@ -56,6 +51,16 @@ public class WebServer extends NanoHTTPD {
 
         File file = new File(Main.instance.getDataFolder() + "/web/" + uri);
         try {
+            try (FileWriter writer = new FileWriter(logFile, true)) {
+                Map<String, String> headers = session.getHeaders();
+                String referer = headers.get("referer");
+                String agent = headers.get("user-agent");
+                String ip = headers.get("remote-addr");
+                String timeStamp = new SimpleDateFormat("dd-MM-yyyy ss:mm:HH").format(new Date());
+                writer.append(timeStamp + " " + session.getMethod() + " " + session.getUri() + " " + ip + " " + agent + " " + referer + "\n");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             if (Method.GET.equals(method) && "/".equals(uri)) file = new File(Main.instance.getDataFolder() + "/web/" + "index.html");
             return newChunkedResponse(Response.Status.OK, "text/html",
                     new FileInputStream(file));

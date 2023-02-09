@@ -5,6 +5,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.sql.Time;
+
 public class Command implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
@@ -29,9 +31,7 @@ public class Command implements CommandExecutor {
                 case "help":
                     sender.sendMessage(
                             "Commands: \n" +
-                            "/wsm blabla\n" +
                             "/wsm reload\n" +
-                            "/wsm stop\n" +
                             "/wsm start\n" +
                             "/wsm status\n" +
                             "/wsm \n");
@@ -40,11 +40,6 @@ public class Command implements CommandExecutor {
                     sender.sendMessage("Starting...");
                     WebServer server = new WebServer();
                     server.start();
-                    return true;
-                case "stop":
-                    sender.sendMessage("Stopping...");
-                    WebServer wsm = new WebServer();
-                    wsm.stopServer();
                     return true;
                 case "reload":
                     switch (args[1]) {
