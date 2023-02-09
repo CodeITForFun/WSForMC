@@ -27,7 +27,7 @@ public class Updater implements Listener {
             }
         }, 0L, 20 * 60 * 60 * 24); // Schedule the task to run every 24 hours
     }
-    private void checkForUpdates() {
+    private static void checkForUpdates() {
         try {
             URL url = new URL("https://api.github.com/repos/CodeITForFun/WSForMC/releases"); // Replace with the URL to your GitHub releases
             BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
