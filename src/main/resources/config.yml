@@ -1,0 +1,33 @@
+########################################################################
+#                                                                      #
+#                The WebServer for Minecraft Plugin                    #
+#                                                                      #
+########################################################################
+#                                                                      #
+# By using this plugin, you automatically accept Minecraft EULA!       #
+# If you have any problem, you can ask on our Discord for Support in   #
+# channel #📃┃help or by forum channel called #📈┃support. If you      #
+# found any bug, please report it. It'll help you and for our plugin!  #
+#                                                                      #
+########################################################################
+#          Created by: Radekminecraft    and    FungY911               #
+########################################################################
+#                                                                      #
+#                                                                      #
+#                   All Permissions for this plugin                    #
+#                                                                      #
+#              All Perms - ws.*                                        #
+#              Webserver Start - ws.start                              #
+#              Webserver Stop - ws.stop                                #
+#              Webserver Restart - ws.restart                          #
+#              Set new port - ws.port                                  #
+#                                                                      #
+#                                                                      #
+########################################################################
+WebServer:
+  port: 8080 # Set this to your open port
+  isRunning: true # For effect you need to reload plugin
+  domain: "CHANGE_ME" # Domain of your server, default is ip of your server.
+  ssl: false # toggle: true/false, set this to true only if you have generated certificate and webserver pointed to domain
+
+No-Permission: "nemas prava L"

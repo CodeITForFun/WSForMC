@@ -1,0 +1,13 @@
+name: WebServerForMinecraft
+version: '${project.version}'
+main: tk.fungy.wsformc.Main
+api-version: 1.19
+authors: [ FungY911 ]
+description: Host your website in your Minecraft Server!
+commands:
+  wsm:
+    usage: /wsm
+    description: Main cmd for WebServerForMinecraft
+  webserver:
+    usage: /webserver
+    description: Main cmd for WebServerForMinecraft
