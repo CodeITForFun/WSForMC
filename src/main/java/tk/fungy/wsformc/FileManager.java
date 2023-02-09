@@ -12,7 +12,7 @@ public class FileManager {
     public static File webFolder = new File(Main.instance.getDataFolder(), "web");
     public static YamlConfiguration config;
     public Integer getIntegerFromConfig(Integer in) { config.getString(String.valueOf(in)); return in; }
-    public boolean getBooleanFromConfig(boolean b) { return Boolean.parseBoolean(config.getString(String.valueOf(b))); }
+    public boolean getBooleanFromConfig(String b) { return Boolean.parseBoolean(config.getString(String.valueOf(b))); }
     public static void setStringInConfig(String key, String value) {
         config.set(key, value);
         try {

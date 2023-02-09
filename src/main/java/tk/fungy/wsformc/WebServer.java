@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class WebServer extends NanoHTTPD {
     private static Integer port = Integer.valueOf(new FileManager().getStringFromConfig("WebServer.port"));
-    private static boolean secureb = new FileManager().getBooleanFromConfig(Boolean.parseBoolean("WebServer.ssl"));
+    private static boolean secureb = new FileManager().getBooleanFromConfig("WebServer.ssl");
     private static String domain = new FileManager().getStringFromConfig("WebServer.domain");
     public WebServer(int port) {
         super(port);

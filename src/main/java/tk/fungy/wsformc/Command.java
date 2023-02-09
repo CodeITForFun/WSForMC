@@ -18,12 +18,8 @@ public class Command implements CommandExecutor {
         if(args.length == 0) {
             switch (command.getName()) {
                 case "wsm":
-                    sender.getServer().getLogger().info("pucovina");
-                    sender.sendMessage("napisal som to..");
-                    return true;
                 case "webserver":
-                    sender.getServer().getLogger().info("pucovina");
-                    sender.sendMessage("napisal som to..");
+                    ((Player) sender).performCommand("wsm help");
                     return true;
             }
         }
@@ -32,6 +28,7 @@ public class Command implements CommandExecutor {
             switch (args[0]) {
                 case "help":
                     sender.sendMessage(
+                            "Commands: \n" +
                             "/wsm blabla\n" +
                             "/wsm reload\n" +
                             "/wsm stop\n" +
@@ -41,10 +38,10 @@ public class Command implements CommandExecutor {
                     return true;
                 case "toggle":
                     sender.sendMessage("Toggling...");
-                    if (Boolean.parseBoolean(new FileManager().getStringFromConfig("WebServer.isRunning"))) {
-                        FileManager.setStringInConfig("WebServer.isRunning", String.valueOf(false));
-                    } else {
+                    if (new FileManager().getBooleanFromConfig("WebServer.isRunning")) {
                         FileManager.setStringInConfig("WebServer.isRunning", String.valueOf(true));
+                    } else {
+                        FileManager.setStringInConfig("WebServer.isRunning", String.valueOf(false));
                     }
                     WebServer server = new WebServer();
                     server.toggle();
