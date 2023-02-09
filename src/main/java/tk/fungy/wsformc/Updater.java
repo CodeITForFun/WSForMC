@@ -19,7 +19,7 @@ public class Updater implements Listener {
     private static String currentVersion;
     private static String latestVersion;
     public static void startUpdater() {
-        currentVersion = Main.getInstance().getDescription().getVersion();
+        currentVersion = new FileManager().getStringFromConfig("Version");
         Bukkit.getScheduler().runTaskTimerAsynchronously(Main.instance, new Runnable() {
             @Override
             public void run() {
@@ -42,18 +42,20 @@ public class Updater implements Listener {
             latestVersion = latestRelease.get("tag_name").getAsString().replace("v", "");
 
             if (!currentVersion.equals(latestVersion)) {
-                Bukkit.getLogger().info("A new update is available: " + latestVersion);
+                Bukkit.getLogger().warning("[WebServerForMinecraft] A new update is available: " + latestVersion);
+            } else {
+                Bukkit.getLogger().warning("[WebServerForMinecraft] You are using latest version");
             }
         } catch (Exception e) {
-            Bukkit.getLogger().warning("Failed to check for updates: " + e.getMessage());
+            Bukkit.getLogger().warning("[WebServerForMinecraft] Failed to check for updates: " + e.getMessage());
         }
     }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        if (player.hasPermission("ws.update") || player.hasPermission("ws.*") && !currentVersion.equals(latestVersion)) {
-            player.sendMessage(ChatColor.AQUA + "A new update for your plugin is available: " + latestVersion);
-        }
+        if (player.hasPermission("ws.update") || player.hasPermission("ws.*"))
+            if (!(currentVersion.equals(latestVersion)))
+                player.sendMessage(Colors.translate("&bA new update of Web Server for minecraft is available: &c" + latestVersion + "\n&bYour version is: &c" + currentVersion + "\n&bDownload it here: &7https://github.com/CodeITForFun/WSForMC/releases"));
     }
 }

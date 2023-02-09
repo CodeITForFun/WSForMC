@@ -5,13 +5,16 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class FileManager {
 
     public static File configFile = new File(Main.instance.getDataFolder(), "config.yml");
     public static File webFolder = new File(Main.instance.getDataFolder(), "web");
+    public static File logsFolder = new File(Main.instance.getDataFolder(), "logs");
+    public static File logsFile = new File(Main.instance.getDataFolder(), "logs/access.log");
     public static YamlConfiguration config;
-    public Integer getIntegerFromConfig(Integer in) { config.getString(String.valueOf(in)); return in; }
     public boolean getBooleanFromConfig(String b) { return Boolean.parseBoolean(config.getString(String.valueOf(b))); }
     public static void setStringInConfig(String key, String value) {
         config.set(key, value);
@@ -35,9 +38,15 @@ public class FileManager {
             File cfgFile = new File(Main.instance.getDataFolder(), "config.yml");
             config = YamlConfiguration.loadConfiguration(cfgFile);
         }
-        if(!webFolder.exists()) {
-            webFolder.mkdir();
+        if (!logsFolder.exists()) logsFolder.mkdir();
+        if (logsFile.exists()) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy_ss:mm:HH");
+            String newFileName = dateFormat.format(new Date()) + ".log";
+            File newFile = new File(Main.instance.getDataFolder(), "logs/" + newFileName);
+            FileManager.logsFile.renameTo(newFile);
         }
+        if(!webFolder.exists()) webFolder.mkdir();
+
     }
     public String getStringFromConfig(String string) {
         if (config == null) {

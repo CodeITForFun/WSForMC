@@ -26,6 +26,36 @@ public class WebServer extends NanoHTTPD {
     //TODO:
     //TODO:   FIX TOGGLE V CONFIGU A CHATE ATD..
     //TODO:
+
+    private String getMimeType(String uri) {
+        if (uri.endsWith(".css")) {
+            return "text/css";
+        } else if (uri.endsWith(".scss")) {
+            return "text/x-scss";
+        } else if (uri.endsWith(".js")) {
+            return "application/javascript";
+        } else if (uri.endsWith(".txt")) {
+            return "text/plain";
+        } else if (uri.endsWith(".html")) {
+            return "text/html";
+        } else if (uri.endsWith(".jpeg") || uri.endsWith(".jpg")) {
+            return "image/jpeg";
+        } else if (uri.endsWith(".png")) {
+            return "image/png";
+        } else if (uri.endsWith(".gif")) {
+            return "image/gif";
+        } else if (uri.endsWith(".mp4")) {
+            return "video/mp4";
+        } else if (uri.endsWith(".mp3")) {
+            return "audio/mpeg";
+        } else if (uri.endsWith(".pdf")) {
+            return "application/pdf";
+        } else {
+            return "application/octet-stream";
+        }
+    }
+
+
     public void start() {
         running = !running;
         if (running) {
@@ -47,8 +77,14 @@ public class WebServer extends NanoHTTPD {
     @Override
     public Response serve(IHTTPSession session) {
         String uri = session.getUri();
-        Method method = session.getMethod();
 
+        if (uri.endsWith("/")) {
+            uri = "/index.html";
+        }
+
+
+        Method method = session.getMethod();
+        String mimeType = getMimeType(uri);
         File file = new File(Main.instance.getDataFolder() + "/web/" + uri);
         try {
             try (FileWriter writer = new FileWriter(logFile, true)) {
@@ -62,7 +98,7 @@ public class WebServer extends NanoHTTPD {
                 e.printStackTrace();
             }
             if (Method.GET.equals(method) && "/".equals(uri)) file = new File(Main.instance.getDataFolder() + "/web/" + "index.html");
-            return newChunkedResponse(Response.Status.OK, "text/html",
+            return newChunkedResponse(Response.Status.OK, mimeType,
                     new FileInputStream(file));
         } catch (FileNotFoundException e) {
             return newFixedLengthResponse(Response.Status.NOT_FOUND, "text/plain",
