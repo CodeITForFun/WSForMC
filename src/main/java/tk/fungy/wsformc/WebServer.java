@@ -73,6 +73,11 @@ public class WebServer extends NanoHTTPD {
         } else if (uri.endsWith(".aac")) {
             return "audio/aac";
         } else if (uri.endsWith(".jsonld")) {
+            return "application/ld+json";
+        } else if (uri.endsWith(".css.map")) {
+            return "application/json";
+        } else if (uri.endsWith(".js.map")) {
+            return "application/json";
         } else {
             return "application/octet-stream";
         }
