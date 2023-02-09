@@ -19,6 +19,8 @@ public final class Main extends JavaPlugin {
     public void onEnable() {
         instance = this;
         getLogger().info("Starting plugin...");
+        Updater.startUpdater();
+        getServer().getPluginManager().registerEvents(new Updater(), Main.instance);
         getLogger().info("Loading File Manager.");
         try {
             new FileManager().startup();
