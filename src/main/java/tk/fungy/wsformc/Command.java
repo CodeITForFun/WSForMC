@@ -1,13 +1,9 @@
 package tk.fungy.wsformc;
 
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.io.File;
-import java.io.IOException;
 
 public class Command implements CommandExecutor {
     @Override

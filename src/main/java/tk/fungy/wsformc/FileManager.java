@@ -1,11 +1,9 @@
 package tk.fungy.wsformc;
 
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 public class FileManager {
@@ -31,8 +29,7 @@ public class FileManager {
             config = new YamlConfiguration().loadConfiguration(configFile);
             String domain = getStringFromConfig("WebServer.domain");
             if (domain.equalsIgnoreCase("CHANGE_ME")) {
-                    InetAddress localhost = InetAddress.getLocalHost();
-                    FileManager.setStringInConfig("WebServer.domain", "free.boathost.xyz");
+                    FileManager.setStringInConfig("WebServer.domain", "0.0.0.0");
             }
 
             File cfgFile = new File(Main.instance.getDataFolder(), "config.yml");
