@@ -32,7 +32,7 @@ public final class Main extends JavaPlugin {
         }
         getLogger().info("Loading WebServer.");
         if (Boolean.parseBoolean(new FileManager().getStringFromConfig("WebServer.isRunning"))) {
-            getLogger().info("Starting WebServer...");
+            getLogger().info("Starting WebServer.");
             WebServer server = new WebServer();
             server.start();
         }

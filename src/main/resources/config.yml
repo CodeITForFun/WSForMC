@@ -21,6 +21,7 @@
 #              Webserver Stop - ws.stop                                #
 #              Webserver Restart - ws.restart                          #
 #              Set new port - ws.port                                  #
+#              Tab - ws.tab                                            #
 #                                                                      #
 #                                                                      #
 ########################################################################
@@ -28,6 +29,7 @@ WebServer:
   port: 8080 # Set this to your open port
   isRunning: true # For effect you need to reload plugin
   domain: "CHANGE_ME" # Domain of your server, default is ip of your server.
+  type: "origin" # origin/cdn
   ssl: false # toggle: true/false, set this to true only if you have generated certificate and webserver pointed to domain
 
 No-Permission: "nemas prava L"

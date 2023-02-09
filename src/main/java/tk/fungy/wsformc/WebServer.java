@@ -3,14 +3,17 @@ package tk.fungy.wsformc;
 import fi.iki.elonen.NanoHTTPD;
 
 import java.io.*;
+import java.nio.file.NoSuchFileException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
+import static tk.fungy.wsformc.FileManager.logsFolder;
+
 public class WebServer extends NanoHTTPD {
-    private static Integer port = Integer.valueOf(new FileManager().getStringFromConfig("WebServer.port"));
-    private static boolean secureb = new FileManager().getBooleanFromConfig("WebServer.ssl");
-    private static String domain = new FileManager().getStringFromConfig("WebServer.domain");
+    static Integer port = Integer.valueOf(new FileManager().getStringFromConfig("WebServer.port"));
+    static boolean secureb = new FileManager().getBooleanFromConfig("WebServer.ssl");
+    static String domain = new FileManager().getStringFromConfig("WebServer.domain");
     public WebServer(int port) {
         super(port);
     }
@@ -121,8 +124,10 @@ public class WebServer extends NanoHTTPD {
                 String ip = headers.get("remote-addr");
                 String timeStamp = new SimpleDateFormat("dd-MM-yyyy ss:mm:HH").format(new Date());
                 writer.append(timeStamp + " " + session.getMethod() + " " + session.getUri() + " " + ip + " " + agent + " " + referer + "\n");
+            } catch (NoSuchFileException e) {
+                if (!logsFolder.exists()) logsFolder.mkdir();
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
             if (Method.GET.equals(method) && "/".equals(uri)) file = new File(Main.instance.getDataFolder() + "/web/" + "index.html".toLowerCase());
             return newChunkedResponse(Response.Status.OK, mimeType,
