@@ -25,7 +25,8 @@ public class WebServer extends NanoHTTPD {
     //TODO:
     //TODO:   FIX TOGGLE V CONFIGU A CHATE ATD..
     //TODO:
-    public void toggle() {
+    public void start() {
+        running = !running;
         if (running) {
             try {
                 start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
@@ -33,19 +34,21 @@ public class WebServer extends NanoHTTPD {
                 if (secureb) {
                     Main.getInstance().getLogger().warning("Running! https://" + domain + ":" + port + "/");
                 } else {
-                    Main.getInstance().getLogger().warning("Running! http://" + domain + ":"+ port + "/");
+                    Main.getInstance().getLogger().warning("Running! http://" + domain + ":" + port + "/");
                 }
             } catch (IOException e) {
                 Main.getInstance().getLogger().warning("Couldn't start server: " + e.getMessage());
                 FileManager.setStringInConfig("WebServer.isRunning", String.valueOf(false));
+                running = false;
             }
-        } else {
-            stop();
-            FileManager.setStringInConfig("WebServer.isRunning", String.valueOf(false));
-            Main.getInstance().getLogger().warning("Server stopped");
         }
     }
-
+    public void stopServer() {
+        stop();
+        running = false;
+        FileManager.setStringInConfig("WebServer.isRunning", String.valueOf(false));
+        Main.getInstance().getLogger().warning("Server stopped");
+    }
     @Override
     public Response serve(IHTTPSession session) {
         String uri = session.getUri();

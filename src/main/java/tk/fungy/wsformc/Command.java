@@ -36,15 +36,15 @@ public class Command implements CommandExecutor {
                             "/wsm status\n" +
                             "/wsm \n");
                     return true;
-                case "toggle":
-                    sender.sendMessage("Toggling...");
-                    if (new FileManager().getBooleanFromConfig("WebServer.isRunning")) {
-                        FileManager.setStringInConfig("WebServer.isRunning", String.valueOf(true));
-                    } else {
-                        FileManager.setStringInConfig("WebServer.isRunning", String.valueOf(false));
-                    }
+                case "start":
+                    sender.sendMessage("Starting...");
                     WebServer server = new WebServer();
-                    server.toggle();
+                    server.start();
+                    return true;
+                case "stop":
+                    sender.sendMessage("Stopping...");
+                    WebServer wsm = new WebServer();
+                    wsm.stopServer();
                     return true;
                 case "reload":
                     switch (args[1]) {
@@ -60,7 +60,13 @@ public class Command implements CommandExecutor {
                             sender.sendMessage("Reloaded");
                             return true;
                     }
-                            sender.sendMessage("config, plugin");
+                    sender.sendMessage("config, plugin");
+                    return true;
+                case "status":
+                    sender.sendMessage("Is Active: " + new FileManager().getBooleanFromConfig("WebServer.isRunning"));
+                    sender.sendMessage("Uptime: null");
+                    sender.sendMessage("Enable Log: null\n");
+                    sender.sendMessage("Created by FungYY911 for everyone");
                     return true;
                 default:
                     sender.sendMessage("Command not found!");

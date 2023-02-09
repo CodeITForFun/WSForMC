@@ -27,7 +27,7 @@ public final class Main extends JavaPlugin {
         getLogger().info("Loading WebServer.");
         if (Boolean.parseBoolean(new FileManager().getStringFromConfig("WebServer.isRunning")) == true) {
             WebServer server = new WebServer();
-            server.toggle();
+            server.start();
         }
         getLogger().info("Loading Commands.");
         instance.getCommand("wsm").setExecutor(new Command());
