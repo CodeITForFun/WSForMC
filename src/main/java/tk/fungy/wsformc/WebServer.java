@@ -36,7 +36,7 @@ public class WebServer extends NanoHTTPD {
             return "application/javascript";
         } else if (uri.endsWith(".txt")) {
             return "text/plain";
-        } else if (uri.endsWith(".html")) {
+        } else if (uri.endsWith(".html") || uri.endsWith(".htm")) {
             return "text/html";
         } else if (uri.endsWith(".jpeg") || uri.endsWith(".jpg")) {
             return "image/jpeg";
@@ -50,6 +50,29 @@ public class WebServer extends NanoHTTPD {
             return "audio/mpeg";
         } else if (uri.endsWith(".pdf")) {
             return "application/pdf";
+        } else if (uri.endsWith(".svg")) {
+            return "image/svg+xml";
+        } else if (uri.endsWith(".xml")) {
+            return "image/svg+xml";
+        } else if (uri.endsWith(".json")) {
+            return "application/json";
+        } else if (uri.endsWith(".ico")) {
+            return "image/vnd.microsoft.icon";
+        } else if (uri.endsWith(".ttf")) {
+            return "font/ttf";
+        } else if (uri.endsWith(".weba")) {
+            return "audio/webm";
+        } else if (uri.endsWith(".webm")) {
+            return "video/webm";
+        } else if (uri.endsWith(".webp")) {
+            return "image/webp";
+        } else if (uri.endsWith(".xhtml")) {
+            return "application/xhtml+xml";
+        } else if (uri.endsWith(".xml")) {
+            return "application/xml";
+        } else if (uri.endsWith(".aac")) {
+            return "audio/aac";
+        } else if (uri.endsWith(".jsonld")) {
         } else {
             return "application/octet-stream";
         }
@@ -76,12 +99,11 @@ public class WebServer extends NanoHTTPD {
     }
     @Override
     public Response serve(IHTTPSession session) {
-        String uri = session.getUri();
+        String uri = session.getUri().toLowerCase();
 
         if (uri.endsWith("/")) {
             uri = "/index.html";
         }
-
 
         Method method = session.getMethod();
         String mimeType = getMimeType(uri);
@@ -97,7 +119,7 @@ public class WebServer extends NanoHTTPD {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            if (Method.GET.equals(method) && "/".equals(uri)) file = new File(Main.instance.getDataFolder() + "/web/" + "index.html");
+            if (Method.GET.equals(method) && "/".equals(uri)) file = new File(Main.instance.getDataFolder() + "/web/" + "index.html".toLowerCase());
             return newChunkedResponse(Response.Status.OK, mimeType,
                     new FileInputStream(file));
         } catch (FileNotFoundException e) {
