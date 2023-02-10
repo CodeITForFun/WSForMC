@@ -14,7 +14,7 @@ import java.io.*;
 import java.net.URL;
 
 public class Updater implements Listener {
-    private static final String currentVersion = new FileManager().getStringFromConfig("Version");
+    private static final String currentVersion = new FileManager().getStringFromConfig("Version").toString();
     private static String latestVersion;
     public static void startUpdater() {
         Bukkit.getScheduler().runTaskTimerAsynchronously(Main.instance, new Runnable() {
@@ -38,13 +38,8 @@ public class Updater implements Listener {
             JsonObject latestRelease = releases.get(0).getAsJsonObject();
             latestVersion = latestRelease.get("tag_name").getAsString().replace("v", "");
 
-            if (currentVersion == null) {
-                Bukkit.getLogger().warning(Colors.translate("[WebServer] An error occured! Please report console error to our discord! https://codeitfor.fun/discord"));
-                return;
-            }
-
             if (!currentVersion.equals(latestVersion)) {
-                Bukkit.getLogger().warning(Colors.translate("[WebServer] A new update is available: " + latestVersion + "\n&bYour version is: &c" + currentVersion));
+                Bukkit.getLogger().warning(Colors.translate("[WebServer] A new update is available: " + latestVersion + " Your version is: " + currentVersion));
             } else {
                 Bukkit.getLogger().warning(Colors.translate("[WebServer] You are using latest version"));
             }
@@ -56,7 +51,13 @@ public class Updater implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
+
+        if (currentVersion == null) {
+            Bukkit.getLogger().warning(Colors.translate("[WebServer] An error occured! Please report console error to our discord! https://codeitfor.fun/discord"));
+            return;
+        }
+
         if (player.hasPermission("ws.update") || player.hasPermission("ws.*"))
-            if (!(new FileManager().getStringFromConfig("Version").equals(latestVersion.toString()))) player.sendMessage(Colors.translate("&8[&cWebServer&8] &bA new update of Web Server for minecraft is available: &c" + latestVersion + "\n&bYour version is: &c" + currentVersion + "\n&bDownload it here: &7https://github.com/CodeITForFun/WSForMC/releases"));
+            if (!(currentVersion.equals(latestVersion.toString()))) player.sendMessage(Colors.translate("&8[&cWebServer&8] &bA new update of Web Server for minecraft is available: &c" + latestVersion + "&b. Your version is: &c" + currentVersion + "&b.\n&bDownload it here: &7https://github.com/CodeITForFun/WSForMC/releases"));
     }
 }
