@@ -13,7 +13,7 @@ public class FileManager {
     public static File configFile = new File(Main.instance.getDataFolder(), "config.yml");
     public static File webFolder = new File(Main.instance.getDataFolder(), "web");
     public static File logsFolder = new File(Main.instance.getDataFolder(), "logs");
-    public static File logsFile = new File(Main.instance.getDataFolder(), "logs/access.log");
+    public static File logsFile = new File(Main.instance.getDataFolder(), "/logs/access.log");
     public static YamlConfiguration config;
     public static String ipaddr;
     public boolean getBooleanFromConfig(String b) { return Boolean.parseBoolean(config.getString(String.valueOf(b))); }

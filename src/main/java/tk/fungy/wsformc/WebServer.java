@@ -24,7 +24,7 @@ public class WebServer extends NanoHTTPD {
     private File logFile;
     public WebServer() {
         super(port);
-        logFile = new File(Main.instance.getDataFolder() + "/logs/latest.log");
+        logFile = new File(Main.instance.getDataFolder() + "/logs/access.log");
     }
     //TODO:
     //TODO:   FIX TOGGLE V CONFIGU A CHATE ATD..
