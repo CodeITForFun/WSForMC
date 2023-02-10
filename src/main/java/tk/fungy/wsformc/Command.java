@@ -42,18 +42,8 @@ public class Command implements CommandExecutor, TabCompleter {
                     return true;
                 case "start":
                     sender.sendMessage("Starting...");
-                    if (new FileManager().getStringFromConfig("WebServer.type").equals("origin")) {
                     WebServer server = new WebServer();
                     server.start();
-                    } else if (new FileManager().getStringFromConfig("WebServer.type").equals("cdn")) {
-                        CDNServer cdnServer = null;
-                        try {
-                            cdnServer = new CDNServer();
-                            cdnServer.start();
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
                     return true;
                 case "reload":
                     switch (args[1]) {

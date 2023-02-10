@@ -2,8 +2,7 @@ package tk.fungy.wsformc;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -34,19 +33,11 @@ public class FileManager {
             if (domain.equalsIgnoreCase("CHANGE_ME")) {
                     FileManager.setStringInConfig("WebServer.domain", "0.0.0.0");
             }
-
             File cfgFile = new File(Main.instance.getDataFolder(), "config.yml");
             config = YamlConfiguration.loadConfiguration(cfgFile);
         }
         if (!logsFolder.exists()) logsFolder.mkdir();
-        if (logsFile.exists()) {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy_ss:mm:HH");
-            String newFileName = dateFormat.format(new Date()) + ".log";
-            File newFile = new File(Main.instance.getDataFolder(), "logs/" + newFileName);
-            FileManager.logsFile.renameTo(newFile);
-        }
         if(!webFolder.exists()) webFolder.mkdir();
-
     }
     public String getStringFromConfig(String string) {
         if (config == null) {
@@ -57,5 +48,12 @@ public class FileManager {
     public void reloadConfig() {
         File cfgFile = new File(Main.instance.getDataFolder(), "config.yml");
         config = YamlConfiguration.loadConfiguration(cfgFile);
+    }
+
+    public void removeLogFile() {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy_ss:mm:HH");
+            String newFileName = dateFormat.format(new Date()) + ".log";
+            File newFile = new File(Main.instance.getDataFolder(), "logs/" + newFileName);
+            FileManager.logsFile.renameTo(newFile);
     }
 }

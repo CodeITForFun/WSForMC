@@ -30,6 +30,7 @@ public final class Main extends JavaPlugin {
         } catch (UnknownHostException e) {
             getLogger().warning("Failed to found IP of this server, please set this manually.");
         }
+        new FileManager().removeLogFile();
         getLogger().info("Loading WebServer.");
         if (Boolean.parseBoolean(new FileManager().getStringFromConfig("WebServer.isRunning"))) {
             getLogger().info("Starting WebServer.");
@@ -43,10 +44,6 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy_ss:mm:HH");
-        String newFileName = dateFormat.format(new Date()) + ".log";
-        File newFile = new File(Main.instance.getDataFolder(), "logs/" + newFileName);
-        FileManager.logsFile.renameTo(newFile);
         getLogger().info("Disabling plugin...");
     }
 }
