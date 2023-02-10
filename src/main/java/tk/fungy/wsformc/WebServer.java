@@ -108,6 +108,11 @@ public class WebServer extends NanoHTTPD {
     @Override
     public Response serve(IHTTPSession session) {
         String uri = session.getUri().toLowerCase();
+        String hostHeader = session.getHeaders().get("host");
+        if (hostHeader == null || !hostHeader.contains(domain + ":" + port)) {
+            return newFixedLengthResponse(Response.Status.BAD_REQUEST, "text/plain", "DNS_PROBE_POSSIBLE");
+        }
+
 
         if (uri.endsWith("/")) {
             uri = "/index.html";
