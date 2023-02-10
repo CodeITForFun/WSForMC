@@ -4,22 +4,19 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Color;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.io.*;
-import java.net.Socket;
+
 import java.net.URL;
 
 public class Updater implements Listener {
-    private static String currentVersion;
+    private static final String currentVersion = new FileManager().getStringFromConfig("Version");
     private static String latestVersion;
     public static void startUpdater() {
-        currentVersion = new FileManager().getStringFromConfig("Version");
         Bukkit.getScheduler().runTaskTimerAsynchronously(Main.instance, new Runnable() {
             @Override
             public void run() {
@@ -41,13 +38,18 @@ public class Updater implements Listener {
             JsonObject latestRelease = releases.get(0).getAsJsonObject();
             latestVersion = latestRelease.get("tag_name").getAsString().replace("v", "");
 
+            if (currentVersion == null) {
+                Bukkit.getLogger().warning(Colors.translate("[WebServer] An error occured! Please report console error to our discord! https://codeitfor.fun/discord"));
+                return;
+            }
+
             if (!currentVersion.equals(latestVersion)) {
-                Bukkit.getLogger().warning("[WebServerForMinecraft] A new update is available: " + latestVersion);
+                Bukkit.getLogger().warning(Colors.translate("[WebServer] A new update is available: " + latestVersion + "\n&bYour version is: &c" + currentVersion));
             } else {
-                Bukkit.getLogger().warning("[WebServerForMinecraft] You are using latest version");
+                Bukkit.getLogger().warning(Colors.translate("[WebServer] You are using latest version"));
             }
         } catch (Exception e) {
-            Bukkit.getLogger().warning("[WebServerForMinecraft] Failed to check for updates: " + e.getMessage());
+            Bukkit.getLogger().warning(Colors.translate("[WebServer] Failed to check for updates: " + e.getMessage()));
         }
     }
 
@@ -55,7 +57,6 @@ public class Updater implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         if (player.hasPermission("ws.update") || player.hasPermission("ws.*"))
-            if (!(currentVersion.equals(latestVersion)))
-                player.sendMessage(Colors.translate("&bA new update of Web Server for minecraft is available: &c" + latestVersion + "\n&bYour version is: &c" + currentVersion + "\n&bDownload it here: &7https://github.com/CodeITForFun/WSForMC/releases"));
+            if (!(new FileManager().getStringFromConfig("Version").equals(latestVersion.toString()))) player.sendMessage(Colors.translate("&8[&cWebServer&8] &bA new update of Web Server for minecraft is available: &c" + latestVersion + "\n&bYour version is: &c" + currentVersion + "\n&bDownload it here: &7https://github.com/CodeITForFun/WSForMC/releases"));
     }
 }
