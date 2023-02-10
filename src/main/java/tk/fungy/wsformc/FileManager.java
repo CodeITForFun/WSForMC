@@ -39,7 +39,7 @@ public class FileManager {
                     ipaddr = reader.readLine();
                     Main.getInstance().getLogger().info(ipaddr);
                 } catch (Exception e) {
-                    Main.getInstance().getLogger().info("Failed to get your public ip. Returned error is:ww " + e.getMessage());
+                    Main.getInstance().getLogger().info("Failed to get your public ip. Returned error is: " + e.getMessage());
                 }
                     ipaddr.replace(" ", "");
                     ipaddr.replace("[STDOUT]", "");
@@ -66,6 +66,6 @@ public class FileManager {
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy_ss:mm:HH");
             String newFileName = dateFormat.format(new Date()) + ".log";
             File newFile = new File(Main.instance.getDataFolder(), "logs/" + newFileName);
-            FileManager.logsFile.renameTo(newFile);
+            logsFile.renameTo(newFile);
     }
 }
