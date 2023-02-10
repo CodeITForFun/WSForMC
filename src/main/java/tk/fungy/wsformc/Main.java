@@ -30,12 +30,6 @@ public final class Main extends JavaPlugin {
             getLogger().warning("Failed to found IP of this server, please set this manually.");
         }
         new FileManager().removeLogFile();
-        getLogger().info("Loading WebServer.");
-        if (Boolean.parseBoolean(new FileManager().getStringFromConfig("WebServer.isRunning"))) {
-            getLogger().info("Starting WebServer.");
-            WebServer server = new WebServer();
-            server.start();
-        }
         getLogger().info("Loading Assets.");
         instance.getCommand("wsm").setExecutor(new Command());
         instance.getCommand("webserver").setExecutor(new Command());
