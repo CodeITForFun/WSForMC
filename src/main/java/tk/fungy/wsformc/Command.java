@@ -48,15 +48,19 @@ public class Command implements CommandExecutor, TabCompleter {
                     sender.sendMessage("Starting...");
                     WebServer server = new WebServer();
                     server.start();
-                    if (new FileManager().getBooleanFromConfig("WebServer.ssl")) { secured = "https://"; } else { secured = "http://"; }
+                    if (new FileManager().getBooleanFromConfig("WebServer.ssl")) {
+                        secured = "https://";
+                    } else {
+                        secured = "http://";
+                    }
                     TextComponent message = new TextComponent(Colors.translate("Accessible via " +
                             secured +
                             new FileManager().getStringFromConfig("WebServer.domain") +
                             ":" +
                             new FileManager().getStringFromConfig("WebServer.port")));
-                    message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, secured+
-                            new FileManager().getStringFromConfig("WebServer.domain")+
-                            ":"+
+                    message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, secured +
+                            new FileManager().getStringFromConfig("WebServer.domain") +
+                            ":" +
                             new FileManager().getStringFromConfig("WebServer.port")));
                     message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Click to open Website").create()));
                     player.spigot().sendMessage(message);
@@ -114,8 +118,18 @@ public class Command implements CommandExecutor, TabCompleter {
             if (sender.hasPermission("wsm.tab") || sender.hasPermission("wsm.*")) {
                 arguments.add("status");
                 arguments.add("start");
+                arguments.add("reload");
             }
             return arguments;
+        } else if (args.length == 2) {
+            switch (args[0].toLowerCase()) {
+                case "reload":
+                    List<String> arguments = new ArrayList<>();
+                    arguments.add("config");
+                    arguments.add("plugin");
+                    return arguments;
+            }
+
         }
         return null;
     }
