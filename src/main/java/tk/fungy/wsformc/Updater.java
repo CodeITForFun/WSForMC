@@ -14,7 +14,7 @@ import java.io.*;
 import java.net.URL;
 
 public class Updater implements Listener {
-    private static final String currentVersion = new FileManager().getStringFromConfig("Version").toString();
+    private static final String currentVersion = new FileManager().getStringFromConfig("Version");
     private static String latestVersion;
     public static void startUpdater() {
         Bukkit.getScheduler().runTaskTimerAsynchronously(Main.instance, new Runnable() {

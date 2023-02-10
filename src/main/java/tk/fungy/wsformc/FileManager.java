@@ -3,6 +3,7 @@ package tk.fungy.wsformc;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.*;
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -14,6 +15,7 @@ public class FileManager {
     public static File logsFolder = new File(Main.instance.getDataFolder(), "logs");
     public static File logsFile = new File(Main.instance.getDataFolder(), "logs/access.log");
     public static YamlConfiguration config;
+    public static String ipaddr;
     public boolean getBooleanFromConfig(String b) { return Boolean.parseBoolean(config.getString(String.valueOf(b))); }
     public static void setStringInConfig(String key, String value) {
         config.set(key, value);
@@ -31,7 +33,15 @@ public class FileManager {
             config = new YamlConfiguration().loadConfiguration(configFile);
             String domain = getStringFromConfig("WebServer.domain");
             if (domain.equalsIgnoreCase("CHANGE_ME")) {
-                    FileManager.setStringInConfig("WebServer.domain", "0.0.0.0");
+                try {
+                    URL url = new URL("http://checkip.amazonaws.com");
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+                    String ipaddr = reader.readLine();
+                    System.out.println(ipaddr);
+                } catch (Exception e) {
+                    System.out.println("Failed to get your public ip. Returned error is:ww " + e.getMessage());
+                }
+                FileManager.setStringInConfig("WebServer.domain", ipaddr);
             }
             File cfgFile = new File(Main.instance.getDataFolder(), "config.yml");
             config = YamlConfiguration.loadConfiguration(cfgFile);

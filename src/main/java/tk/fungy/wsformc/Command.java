@@ -6,12 +6,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import java.io.IOException;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Command implements CommandExecutor, TabCompleter {
+    private static String secured;
+
     @Override
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
@@ -35,7 +35,7 @@ public class Command implements CommandExecutor, TabCompleter {
                 case "help":
                     sender.sendMessage(
                             "Commands: \n" +
-                                    "/wsm reload\n" +
+                                    "/wsm reload [config] / [plugin]\n" +
                                     "/wsm start\n" +
                                     "/wsm status\n" +
                                     "/wsm \n");
@@ -44,6 +44,12 @@ public class Command implements CommandExecutor, TabCompleter {
                     sender.sendMessage("Starting...");
                     WebServer server = new WebServer();
                     server.start();
+                    if (new FileManager().getBooleanFromConfig("WebServer.ssl")) { secured = "https://"; } else { secured = "http://"; }
+                    sender.sendMessage(Colors.translate("Accessible via " +
+                            secured +
+                            new FileManager().getStringFromConfig("WebServer.domain") +
+                            ":" +
+                            new FileManager().getStringFromConfig("WebServer.port")));
                     return true;
                 case "reload":
                     switch (args[1]) {
@@ -77,15 +83,15 @@ public class Command implements CommandExecutor, TabCompleter {
                     return true;
                 case "status":
                     sender.sendMessage("Is Active: " + new FileManager().getBooleanFromConfig("WebServer.isRunning"));
-                    sender.sendMessage("Uptime: null");
-                    sender.sendMessage("Enable Log: null\n");
+                    sender.sendMessage("Uptime: null"); //TODO: Add Uptime
+                    sender.sendMessage("Enable Log: true\n"); //TODO: Add toggle accesslog
                     sender.sendMessage("Created by FungYY911 for everyone");
                     return true;
                 default:
                     sender.sendMessage("Command not found!");
             }
         } else {
-            sender.sendMessage(new FileManager().getStringFromConfig("No-Permission"));
+            sender.sendMessage(Colors.translate(new FileManager().getStringFromConfig("No-Permission")));
         }
         return true;
     }
@@ -100,20 +106,6 @@ public class Command implements CommandExecutor, TabCompleter {
                 arguments.add("start");
             }
             return arguments;
-        } else if(args.length == 2) {
-            switch(args[0].toLowerCase()) {
-                //TODO: ADD LOG AND THEIR TYPES AND TYPE ADD CDN
-                case "type":
-                    List<String> arguments = new ArrayList<>();
-                    arguments.add("cdn");
-                    arguments.add("origin");
-                    return arguments;
-                case "log":
-                    List<String> arguments0 = new ArrayList<>();
-                    arguments0.add("live");
-                    arguments0.add("grep");
-                    return arguments0;
-            }
         }
         return null;
     }

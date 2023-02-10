@@ -22,7 +22,6 @@ public final class Main extends JavaPlugin {
     public void onEnable() {
         instance = this;
         getLogger().info("Starting plugin...");
-        Updater.startUpdater();
         getServer().getPluginManager().registerEvents(new Updater(), Main.instance);
         getLogger().info("Loading File Manager.");
         try {
@@ -37,9 +36,10 @@ public final class Main extends JavaPlugin {
             WebServer server = new WebServer();
             server.start();
         }
-        getLogger().info("Loading Commands.");
+        getLogger().info("Loading Assets.");
         instance.getCommand("wsm").setExecutor(new Command());
         instance.getCommand("webserver").setExecutor(new Command());
+        Updater.startUpdater();
     }
 
     @Override
