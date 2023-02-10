@@ -1,5 +1,9 @@
 package tk.fungy.wsformc;
 
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -45,11 +49,17 @@ public class Command implements CommandExecutor, TabCompleter {
                     WebServer server = new WebServer();
                     server.start();
                     if (new FileManager().getBooleanFromConfig("WebServer.ssl")) { secured = "https://"; } else { secured = "http://"; }
-                    sender.sendMessage(Colors.translate("Accessible via " +
+                    TextComponent message = new TextComponent(Colors.translate("Accessible via " +
                             secured +
                             new FileManager().getStringFromConfig("WebServer.domain") +
                             ":" +
                             new FileManager().getStringFromConfig("WebServer.port")));
+                    message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, secured+
+                            new FileManager().getStringFromConfig("WebServer.domain")+
+                            ":"+
+                            new FileManager().getStringFromConfig("WebServer.port")));
+                    message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Click to open Website").create()));
+                    player.spigot().sendMessage(message);
                     return true;
                 case "reload":
                     switch (args[1]) {

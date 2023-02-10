@@ -36,11 +36,13 @@ public class FileManager {
                 try {
                     URL url = new URL("http://checkip.amazonaws.com");
                     BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
-                    String ipaddr = reader.readLine();
-                    System.out.println(ipaddr);
+                    ipaddr = reader.readLine();
+                    Main.getInstance().getLogger().info(ipaddr);
                 } catch (Exception e) {
-                    System.out.println("Failed to get your public ip. Returned error is:ww " + e.getMessage());
+                    Main.getInstance().getLogger().info("Failed to get your public ip. Returned error is:ww " + e.getMessage());
                 }
+                    ipaddr.replace(" ", "");
+                    ipaddr.replace("[STDOUT]", "");
                 FileManager.setStringInConfig("WebServer.domain", ipaddr);
             }
             File cfgFile = new File(Main.instance.getDataFolder(), "config.yml");
