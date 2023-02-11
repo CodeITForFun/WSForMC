@@ -38,9 +38,7 @@ public class Updater implements Listener {
             JsonObject latestRelease = releases.get(0).getAsJsonObject();
             latestVersion = latestRelease.get("tag_name").getAsString().replace("v", "");
 
-            if(currentVersion == null) {
-                currentVersion = new FileManager().getStringFromConfig("Version");
-            }
+            if(currentVersion == null) { currentVersion = new FileManager().getStringFromConfig("Version"); }
 
             if (!currentVersion.equals(latestVersion)) {
                 Bukkit.getLogger().warning(Colors.translate("[WebServer] A new update is available: " + latestVersion + " Your version is: " + currentVersion));
