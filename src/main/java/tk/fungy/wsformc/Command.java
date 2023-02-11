@@ -46,7 +46,7 @@ public class Command implements CommandExecutor, TabCompleter {
                                     "/wsm \n");
                     return true;
                 case "start":
-                    if (sender.hasPermission("ws.start")) {
+                    if (!(sender.hasPermission("ws.start") || sender.hasPermission("ws.*"))) {
                         sender.sendMessage(Colors.translate(new FileManager().getStringFromConfig("No-Permission")));
                         return true;
                     }
@@ -76,7 +76,7 @@ public class Command implements CommandExecutor, TabCompleter {
                     player.spigot().sendMessage(message);
                     return true;
                 case "stop":
-                    if (sender.hasPermission("ws.stop")) {
+                    if (!(sender.hasPermission("ws.stop") || sender.hasPermission("ws.*"))) {
                         sender.sendMessage(Colors.translate(new FileManager().getStringFromConfig("No-Permission")));
                         return true;
                     }
@@ -95,7 +95,7 @@ public class Command implements CommandExecutor, TabCompleter {
                     ws = null;
                     return true;
                 case "reload":
-                    if (sender.hasPermission("ws.reload")) {
+                    if (!(sender.hasPermission("ws.reload") || sender.hasPermission("ws.*"))) {
                         sender.sendMessage(Colors.translate(new FileManager().getStringFromConfig("No-Permission")));
                         return true;
                     }
@@ -149,7 +149,7 @@ public class Command implements CommandExecutor, TabCompleter {
         if (args.length == 1) {
             List<String> arguments = new ArrayList<>();
             arguments.add("help");
-            if (sender.hasPermission("wsm.tab") || sender.hasPermission("wsm.*")) {
+            if (sender.hasPermission("ws.tab") || sender.hasPermission("ws.*")) {
                 arguments.add("start");
                 arguments.add("stop");
                 arguments.add("status");
