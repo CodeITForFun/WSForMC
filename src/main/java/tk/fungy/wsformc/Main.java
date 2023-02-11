@@ -1,5 +1,6 @@
 package tk.fungy.wsformc;
 
+import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.net.UnknownHostException;
@@ -33,6 +34,9 @@ public final class Main extends JavaPlugin {
             Command.ws.start();
         }
         Updater.startUpdater();
+
+        int pluginId = 17696;
+        Metrics metrics = new Metrics(Main.instance, pluginId);
     }
 
     @Override
