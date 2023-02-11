@@ -33,6 +33,14 @@ public final class Main extends JavaPlugin {
             getLogger().info("Starting Webserbver.");
             Command.ws.start();
         }
+        if (FileManager.config == null) {
+            try {
+                new FileManager().startup();
+            } catch (UnknownHostException e) {
+                getLogger().warning("Failed to found IP of this server, please set this manually.");
+            }
+        }
+        FileManager.setStringInConfig("Version", getDescription().getVersion());
         Updater.startUpdater();
 
         int pluginId = 17696;
