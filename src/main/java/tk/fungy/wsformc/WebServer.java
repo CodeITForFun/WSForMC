@@ -20,7 +20,7 @@ public class WebServer extends NanoHTTPD {
     public WebServer(String hostname, int port) {
         super(hostname, port);
     }
-    public static boolean running = Boolean.parseBoolean(new FileManager().getStringFromConfig("WebServer.isRunning"));
+    public static boolean running = new FileManager().getBooleanFromConfig("WebServer.isRunning");
     private File logFile;
     public WebServer() {
         super(port);
@@ -118,10 +118,7 @@ public class WebServer extends NanoHTTPD {
             return newFixedLengthResponse(Response.Status.BAD_REQUEST, "text/plain", "DNS_PROBE_POSSIBLE");
         }
 
-
-        if (uri.endsWith("/")) {
-            uri = "/index.html";
-        }
+        if (uri.endsWith("/")) { uri = "/index.html"; }
 
         Method method = session.getMethod();
         String mimeType = getMimeType(uri);

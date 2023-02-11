@@ -15,7 +15,7 @@ import java.util.List;
 
 public class Command implements CommandExecutor, TabCompleter {
     private static String secured;
-    WebServer ws;
+    public static WebServer ws;
 
     @Override
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {

@@ -1,5 +1,6 @@
 package tk.fungy.wsformc;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -34,6 +35,11 @@ public final class Main extends JavaPlugin {
         instance.getCommand("wsm").setExecutor(new Command());
         instance.getCommand("webserver").setExecutor(new Command());
         Updater.startUpdater();
+        if (WebServer.running) {
+            if (Command.ws == null) Command.ws = new WebServer();
+            getLogger().info("Starting Webserbver.");
+            Command.ws.start();
+        }
     }
 
     @Override
