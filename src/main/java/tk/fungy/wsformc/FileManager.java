@@ -37,7 +37,7 @@ public class FileManager {
                     URL url = new URL("http://checkip.amazonaws.com");
                     BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
                     ipaddr = reader.readLine();
-                    Main.getInstance().getLogger().info(ipaddr);
+                    Main.getInstance().getLogger().info("IP of device: " + ipaddr);
                 } catch (Exception e) {
                     Main.getInstance().getLogger().info("Failed to get your public ip. Returned error is: " + e.getMessage());
                 }

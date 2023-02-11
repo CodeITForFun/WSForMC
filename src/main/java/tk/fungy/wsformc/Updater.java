@@ -14,7 +14,7 @@ import java.io.*;
 import java.net.URL;
 
 public class Updater implements Listener {
-    private static final String currentVersion = new FileManager().getStringFromConfig("Version");
+    private static String currentVersion = new FileManager().getStringFromConfig("Version");
     private static String latestVersion;
     public static void startUpdater() {
         Bukkit.getScheduler().runTaskTimerAsynchronously(Main.instance, new Runnable() {
@@ -37,6 +37,10 @@ public class Updater implements Listener {
             JsonArray releases = new JsonParser().parse(result.toString()).getAsJsonArray();
             JsonObject latestRelease = releases.get(0).getAsJsonObject();
             latestVersion = latestRelease.get("tag_name").getAsString().replace("v", "");
+
+            if(currentVersion == null) {
+                currentVersion = new FileManager().getStringFromConfig("Version");
+            }
 
             if (!currentVersion.equals(latestVersion)) {
                 Bukkit.getLogger().warning(Colors.translate("[WebServer] A new update is available: " + latestVersion + " Your version is: " + currentVersion));

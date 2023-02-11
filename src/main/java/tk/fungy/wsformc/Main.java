@@ -34,12 +34,12 @@ public final class Main extends JavaPlugin {
         getLogger().info("Loading Assets.");
         instance.getCommand("wsm").setExecutor(new Command());
         instance.getCommand("webserver").setExecutor(new Command());
-        Updater.startUpdater();
         if (WebServer.running) {
             if (Command.ws == null) Command.ws = new WebServer();
             getLogger().info("Starting Webserbver.");
             Command.ws.start();
         }
+        Updater.startUpdater();
     }
 
     @Override
