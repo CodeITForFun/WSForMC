@@ -88,10 +88,8 @@ public class WebServer extends NanoHTTPD {
 
 
     public void start() {
-        running = !running;
-        if (running) {
             try {
-                start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
+                super.start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
                 FileManager.setStringInConfig("WebServer.isRunning", String.valueOf(true));
                 if (secureb) {
                     Main.getInstance().getLogger().warning("Running! https://" + domain + ":" + port + "/");
@@ -101,8 +99,15 @@ public class WebServer extends NanoHTTPD {
             } catch (IOException e) {
                 Main.getInstance().getLogger().warning("Couldn't start server: " + e.getMessage());
                 FileManager.setStringInConfig("WebServer.isRunning", String.valueOf(false));
-                running = false;
             }
+    }
+    public void stop() {
+        super.stop();
+        FileManager.setStringInConfig("WebServer.isRunning", String.valueOf(false));
+        if (!(super.isAlive())) {
+            Main.getInstance().getLogger().warning("Webserver has been Stopped!");
+        } else {
+            Main.getInstance().getLogger().warning("Webserver has not been Stopped! Are you started the WebServer?");
         }
     }
     @Override

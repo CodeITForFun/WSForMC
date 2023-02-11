@@ -15,6 +15,7 @@ import java.util.List;
 
 public class Command implements CommandExecutor, TabCompleter {
     private static String secured;
+    WebServer ws;
 
     @Override
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
@@ -45,9 +46,13 @@ public class Command implements CommandExecutor, TabCompleter {
                                     "/wsm \n");
                     return true;
                 case "start":
+                    if (ws != null) {
+                        sender.sendMessage("WebServer is alredy started!");
+                        return true;
+                    }
                     sender.sendMessage("Starting...");
-                    WebServer server = new WebServer();
-                    server.start();
+                    ws = new WebServer();
+                    ws.start();
                     if (new FileManager().getBooleanFromConfig("WebServer.ssl")) {
                         secured = "https://";
                     } else {
@@ -64,6 +69,20 @@ public class Command implements CommandExecutor, TabCompleter {
                             new FileManager().getStringFromConfig("WebServer.port")));
                     message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Click to open Website").create()));
                     player.spigot().sendMessage(message);
+                    return true;
+                case "stop":
+                    if (ws == null) {
+                        sender.sendMessage("WebServer was not started yet!");
+                        return true;
+                    }
+                    ws.stop();
+                    FileManager.setStringInConfig("WebServer.isRunning", String.valueOf(false));
+                    if (!(ws.isAlive())) {
+                        sender.sendMessage("Webserver has been Stopped!");
+                    } else {
+                        sender.sendMessage("Webserver has not been Stopped!");
+                    }
+                    ws = null;
                     return true;
                 case "reload":
                     switch (args[1]) {
@@ -116,8 +135,9 @@ public class Command implements CommandExecutor, TabCompleter {
             List<String> arguments = new ArrayList<>();
             arguments.add("help");
             if (sender.hasPermission("wsm.tab") || sender.hasPermission("wsm.*")) {
-                arguments.add("status");
                 arguments.add("start");
+                arguments.add("stop");
+                arguments.add("status");
                 arguments.add("reload");
             }
             return arguments;
