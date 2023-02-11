@@ -99,21 +99,23 @@ public class Command implements CommandExecutor, TabCompleter {
                         sender.sendMessage(Colors.translate(new FileManager().getStringFromConfig("No-Permission")));
                         return true;
                     }
-
-                    switch (args[1]) {
-                        case "config":
-                            sender.sendMessage("Reloading config...");
-                            new FileManager().reloadConfig();
-                            sender.sendMessage("Reloaded");
-                            return true;
-                        case "plugin":
-                            sender.sendMessage("Reloading plugin...");
-                            Bukkit.getPluginManager().disablePlugin(Main.instance);
-                            Bukkit.getPluginManager().enablePlugin(Main.instance);
-                            sender.sendMessage("Reloaded");
-                            return true;
+                    if(args.length > 1) {
+                        switch (args[1]) {
+                            case "config":
+                                sender.sendMessage("Reloading config...");
+                                new FileManager().reloadConfig();
+                                sender.sendMessage("Reloaded");
+                                return true;
+                            case "plugin":
+                                sender.sendMessage("Reloading plugin...");
+                                Bukkit.getPluginManager().disablePlugin(Main.instance);
+                                Bukkit.getPluginManager().enablePlugin(Main.instance);
+                                sender.sendMessage("Reloaded");
+                                return true;
+                        }
+                    } else {
+                        sender.sendMessage("Please choose config/plugin");
                     }
-                    sender.sendMessage("config, plugin");
                     return true;
                 case "type":
                     switch (args[1]) {
