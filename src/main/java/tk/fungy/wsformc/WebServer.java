@@ -71,8 +71,6 @@ public class WebServer extends NanoHTTPD {
             return "image/webp";
         } else if (uri.endsWith(".xhtml")) {
             return "application/xhtml+xml";
-        } else if (uri.endsWith(".xml")) {
-            return "application/xml";
         } else if (uri.endsWith(".aac")) {
             return "audio/aac";
         } else if (uri.endsWith(".jsonld")) {
