@@ -6,7 +6,7 @@
 #                                                                      #
 # By using this plugin, you automatically accept Minecraft EULA!       #
 # If you have any problem, you can ask on our Discord for Support in   #
-# channel #📃┃help or by forum channel called #📈┃support. If you      #
+# channel #📃┃help or by forum channel called #📈┃support. If you     #
 # found any bug, please report it. It'll help you and for our plugin!  #
 #                                                                      #
 ########################################################################
@@ -19,7 +19,7 @@
 #              All Perms - ws.*                                        #
 #              Webserver Start - ws.start                              #
 #              Webserver Stop - ws.stop                                #
-#              Webserver Restart - ws.restart                          #
+#              Plugin Reload - ws.reload                               #
 #              Set new port - ws.port                                  #
 #              Tab - ws.tab                                            #
 #                                                                      #

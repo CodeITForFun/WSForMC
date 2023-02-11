@@ -46,6 +46,11 @@ public class Command implements CommandExecutor, TabCompleter {
                                     "/wsm \n");
                     return true;
                 case "start":
+                    if (sender.hasPermission("ws.start")) {
+                        sender.sendMessage(Colors.translate(new FileManager().getStringFromConfig("No-Permission")));
+                        return true;
+                    }
+
                     if (ws != null) {
                         sender.sendMessage("WebServer is alredy started!");
                         return true;
@@ -71,6 +76,11 @@ public class Command implements CommandExecutor, TabCompleter {
                     player.spigot().sendMessage(message);
                     return true;
                 case "stop":
+                    if (sender.hasPermission("ws.stop")) {
+                        sender.sendMessage(Colors.translate(new FileManager().getStringFromConfig("No-Permission")));
+                        return true;
+                    }
+
                     if (ws == null) {
                         sender.sendMessage("WebServer was not started yet!");
                         return true;
@@ -85,6 +95,11 @@ public class Command implements CommandExecutor, TabCompleter {
                     ws = null;
                     return true;
                 case "reload":
+                    if (sender.hasPermission("ws.reload")) {
+                        sender.sendMessage(Colors.translate(new FileManager().getStringFromConfig("No-Permission")));
+                        return true;
+                    }
+
                     switch (args[1]) {
                         case "config":
                             sender.sendMessage("Reloading config...");
