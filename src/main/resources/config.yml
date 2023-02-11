@@ -32,4 +32,4 @@ WebServer:
   ssl: false # toggle: true/false, set this to true only if you have generated certificate and webserver pointed to domain
 
 No-Permission: "nemas prava L"
-Version: "1.0" # Do not edit this line!
+Version: "1.3" # Do not edit this line!
