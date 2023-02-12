@@ -51,7 +51,7 @@ public class Command implements CommandExecutor, TabCompleter {
                         sender.sendMessage(Colors.translate(new FileManager().getStringFromConfig("No-Permission")));
                         return true;
                     }
-                    sender.sendMessage("Your version is: " + Main.getInstance().getDescription().getVersion() + "Latest: " + Updater.latestVersion);
+                    sender.sendMessage("&bYour version is: &c" + Main.getInstance().getDescription().getVersion() + "&b, Latest: &c" + Updater.latestVersion);
                     return true;
                 case "start":
                     if (!(sender.hasPermission("ws.start") || sender.hasPermission("ws.*"))) {
@@ -164,6 +164,7 @@ public class Command implements CommandExecutor, TabCompleter {
                 arguments.add("stop");
                 arguments.add("status");
                 arguments.add("reload");
+                arguments.add("ver");
             }
             return arguments;
         } else if (args.length == 2) {
