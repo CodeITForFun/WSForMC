@@ -3,6 +3,11 @@ package tk.fungy.wsformc;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,7 +20,8 @@ import java.net.URL;
 
 public class Updater implements Listener {
     private static String currentVersion = new FileManager().getStringFromConfig("Version");
-    private static String latestVersion;
+    public static boolean toggleUpdates = new FileManager().getBooleanFromConfig("Version");
+    public static String latestVersion;
     public static void startUpdater() {
         Bukkit.getScheduler().runTaskTimerAsynchronously(Main.instance, new Runnable() {
             @Override
@@ -41,7 +47,7 @@ public class Updater implements Listener {
             if(currentVersion == null) { currentVersion = new FileManager().getStringFromConfig("Version"); }
 
             if (!currentVersion.equals(latestVersion)) {
-                Bukkit.getLogger().warning(Colors.translate("[WebServer] A new update is available: " + latestVersion + " Your version is: " + currentVersion));
+                Bukkit.getLogger().warning(Colors.translate("[WebServer] A new update is available: " + latestVersion + " Your version is: " + currentVersion + ". Download it here: &7https://www.spigotmc.org/resources/web-server-for-minecraft.107949/"));
             } else {
                 Bukkit.getLogger().warning(Colors.translate("[WebServer] You are using latest version"));
             }
@@ -54,12 +60,24 @@ public class Updater implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
+        if (!(player.hasPermission("ws.update") || player.hasPermission("ws.*"))) {
+            return;
+        }
+
+        if (!toggleUpdates) {
+            return;
+        }
+
         if (currentVersion == null) {
             Bukkit.getLogger().warning(Colors.translate("[WebServer] An error occured! Please report console error to our discord! https://codeitfor.fun/discord"));
             return;
         }
 
-        if (player.hasPermission("ws.update") || player.hasPermission("ws.*"))
-            if (!(currentVersion.equals(latestVersion.toString()))) player.sendMessage(Colors.translate("&8[&cWebServer&8] &bA new update of Web Server for minecraft is available: &c" + latestVersion + "&b. Your version is: &c" + currentVersion + "&b.\n&bDownload it here: &7https://github.com/CodeITForFun/WSForMC/releases"));
+        TextComponent message = new TextComponent(Colors.translate("&8[&cWebServer&8] &bA new update of Web Server for minecraft is available: &c" +
+                latestVersion + "&b. Your version is: &c" + currentVersion));
+        message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://www.spigotmc.org/resources/web-server-for-minecraft.107949/"));
+        message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Click to Download Manual Update from SpigotMC").create()));
+
+            if (!(currentVersion.equals(latestVersion.toString()))) player.spigot().sendMessage(message);
     }
 }

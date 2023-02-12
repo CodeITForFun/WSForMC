@@ -43,7 +43,15 @@ public class Command implements CommandExecutor, TabCompleter {
                                     "/wsm reload [config] / [plugin]\n" +
                                     "/wsm start\n" +
                                     "/wsm status\n" +
-                                    "/wsm \n");
+                                    "/wsm version\n");
+                    return true;
+                case "ver":
+                case "version":
+                    if (!(sender.hasPermission("ws.ver") || sender.hasPermission("ws.*"))) {
+                        sender.sendMessage(Colors.translate(new FileManager().getStringFromConfig("No-Permission")));
+                        return true;
+                    }
+                    sender.sendMessage("Your version is: " + Main.getInstance().getDescription().getVersion() + "Latest: " + Updater.latestVersion);
                     return true;
                 case "start":
                     if (!(sender.hasPermission("ws.start") || sender.hasPermission("ws.*"))) {

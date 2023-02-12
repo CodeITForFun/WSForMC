@@ -5,6 +5,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.net.UnknownHostException;
 
+import static tk.fungy.wsformc.Updater.toggleUpdates;
+
 public final class Main extends JavaPlugin {
 
     public static Main getInstance() {
@@ -41,6 +43,9 @@ public final class Main extends JavaPlugin {
             }
         }
         FileManager.setStringInConfig("Version", getDescription().getVersion());
+        if (!(new FileManager().getBooleanFromConfig("Version"))) {
+            new FileManager().setBooleanInConfig("Updates", true);
+        }
         Updater.startUpdater();
 
         int pluginId = 17696;

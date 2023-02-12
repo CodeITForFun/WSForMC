@@ -24,6 +24,13 @@ public class FileManager {
         } catch (IOException e) {
             Main.getInstance().getLogger().warning("Failed to set string. Executed with this error: \n" + e);
         }
+    }public static void setBooleanInConfig(String key, Boolean value) {
+        config.set(key, value);
+        try {
+            config.save(configFile);
+        } catch (IOException e) {
+            Main.getInstance().getLogger().warning("Failed to set boolean. Executed with this error: \n" + e);
+        }
     }
 
 

@@ -22,6 +22,8 @@
 #              Plugin Reload - ws.reload                               #
 #              Set new port - ws.port                                  #
 #              Tab - ws.tab                                            #
+#              Get Version - ws.ver                                    #
+#              Show Updates - ws.update                                #
 #                                                                      #
 #                                                                      #
 ########################################################################
@@ -33,3 +35,4 @@ WebServer:
 
 No-Permission: "&cYou dont have permissions to do this command"
 Version: "1.3.1" # Do not edit this line!
+Updates: true # Toggle updates
