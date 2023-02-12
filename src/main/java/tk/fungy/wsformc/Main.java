@@ -5,8 +5,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.net.UnknownHostException;
 
-import static tk.fungy.wsformc.Updater.toggleUpdates;
-
 public final class Main extends JavaPlugin {
 
     public static Main getInstance() {

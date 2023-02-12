@@ -1,9 +1,6 @@
 package tk.fungy.wsformc;
 
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.command.CommandExecutor;
@@ -13,6 +10,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class Command implements CommandExecutor, TabCompleter {
     private static String secured;
@@ -39,12 +37,27 @@ public class Command implements CommandExecutor, TabCompleter {
         if (args.length >= 0 && sender.hasPermission("ws.*")) {
             switch (args[0]) {
                 case "help":
-                    sender.sendMessage(Colors.translate(
-                            "Commands: \n" +
-                                    "/wsm reload [config] / [plugin]\n" +
-                                    "/wsm start\n" +
-                                    "/wsm status\n" +
-                                    "/wsm version\n"));
+                    TextComponent discord = new TextComponent(Colors.translate("&9&lDISCORD SUPPORT&7"));
+                    TextComponent spigotmc = new TextComponent(Colors.translate("&e&lSpigotMC"));
+                    discord.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.gg/Yxtc7e4naJ"));
+                    spigotmc.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://www.spigotmc.org/resources/web-server-for-minecraft.107949/"));
+                    discord.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Click to Redirect").create()));
+                    spigotmc.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Click to Redirect").create()));
+
+                    sender.sendMessage(Colors.translate("&8[&cWebServer&8] &8⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛\n\n"));
+                    sender.sendMessage(Colors.translate("&8[&cWebServer&8] &bWebServer For Minecraft Server\n&8[&cWebServer&8] &r" +
+                                    "\n   &a&lWebServer: \n" +
+                                    "   &r&2/wsm start    &7Turns on WebServer\n" +
+                                    "   &r&2/wsm stop    &7Turns off WebServer\n" +
+                                    "   &b&lOthers: \n" +
+                                    "   &r&9/wsm reload [config] / [plugin]    &7Reloads config/plugin\n" +
+                                    "   &r&9/wsm status    &7Displays the status of the webserver\n" +
+                                    "   &r&9/wsm version    &7Displays the current and latest version\n"));
+
+                    sender.sendMessage("\n    ");
+                    BaseComponent[] dDsc15 = new BaseComponent[]{ new TextComponent(Colors.translate("&8[&cWebServer&8] &aHelpful: ")), discord, new TextComponent(Colors.translate("  &7x  ")), spigotmc, new TextComponent(Colors.translate("\n&8[&cWebServer&8] &8")) };
+                    sender.spigot().sendMessage(dDsc15);
+                    sender.sendMessage(Colors.translate("&8[&cWebServer&8] &8⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛"));
                     return true;
                 case "ver":
                 case "version":
@@ -144,12 +157,12 @@ public class Command implements CommandExecutor, TabCompleter {
 
                 case "status":
                     if (new FileManager().getBooleanFromConfig("WebServer.isRunning")) { running = "&aOnline"; } else { running = "&cOffline"; }
-                    sender.sendMessage(Colors.translate("&8[&cWebServer&8] &8⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛"));
+                    sender.sendMessage(Colors.translate("&8[&cWebServer&8] &8⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛"));
                     sender.sendMessage(Colors.translate("&8[&cWebServer&8] &bStatus: " + running));
                     sender.sendMessage(Colors.translate("&8[&cWebServer&8] &bUptime: &7null &8(&7This is in TODO&8)")); //TODO: Add Uptime
                     sender.sendMessage(Colors.translate("&8[&cWebServer&8] &bAccesss Log: &aEnabled &8(&7This is in TODO&8)\n")); //TODO: Add toggle accesslog
                     sender.sendMessage(Colors.translate("&8[&cWebServer&8] &bCreated by FungYY911 for everyone"));
-                    sender.sendMessage(Colors.translate("&8[&cWebServer&8] &8⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛"));
+                    sender.sendMessage(Colors.translate("&8[&cWebServer&8] &8⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛"));
                     return true;
                 default:
                     sender.sendMessage(Colors.translate("&8[&cWebServer&8] &cCommand not found!"));
