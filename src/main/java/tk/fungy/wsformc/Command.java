@@ -5,6 +5,7 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -16,7 +17,7 @@ import java.util.List;
 public class Command implements CommandExecutor, TabCompleter {
     private static String secured;
     public static WebServer ws;
-
+    private static String running;
     @Override
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
@@ -38,12 +39,12 @@ public class Command implements CommandExecutor, TabCompleter {
         if (args.length >= 0 && sender.hasPermission("ws.*")) {
             switch (args[0]) {
                 case "help":
-                    sender.sendMessage(
+                    sender.sendMessage(Colors.translate(
                             "Commands: \n" +
                                     "/wsm reload [config] / [plugin]\n" +
                                     "/wsm start\n" +
                                     "/wsm status\n" +
-                                    "/wsm version\n");
+                                    "/wsm version\n"));
                     return true;
                 case "ver":
                 case "version":
@@ -51,7 +52,7 @@ public class Command implements CommandExecutor, TabCompleter {
                         sender.sendMessage(Colors.translate(new FileManager().getStringFromConfig("No-Permission")));
                         return true;
                     }
-                    sender.sendMessage("&bYour version is: &c" + Main.getInstance().getDescription().getVersion() + "&b, Latest: &c" + Updater.latestVersion);
+                    sender.sendMessage(Colors.translate("&8[&cWebServer&8] &bYour version is: &c" + Main.getInstance().getDescription().getVersion() + "&b, Latest: &c" + Updater.latestVersion));
                     return true;
                 case "start":
                     if (!(sender.hasPermission("ws.start") || sender.hasPermission("ws.*"))) {
@@ -60,18 +61,14 @@ public class Command implements CommandExecutor, TabCompleter {
                     }
 
                     if (ws != null) {
-                        sender.sendMessage("WebServer is alredy started!");
+                        sender.sendMessage(Colors.translate("&8[&cWebServer&8] &cWebServer is alredy started!"));
                         return true;
                     }
-                    sender.sendMessage("Starting...");
+                    sender.sendMessage(Colors.translate("&8[&cWebServer&8] &7Starting..."));
                     ws = new WebServer();
                     ws.start();
-                    if (new FileManager().getBooleanFromConfig("WebServer.ssl")) {
-                        secured = "https://";
-                    } else {
-                        secured = "http://";
-                    }
-                    TextComponent message = new TextComponent(Colors.translate("Accessible via " +
+                    if (new FileManager().getBooleanFromConfig("WebServer.ssl")) { secured = "https://"; } else { secured = "http://"; }
+                    TextComponent message = new TextComponent(Colors.translate("&8[&cWebServer&8] &bAccessible via &7" +
                             secured +
                             new FileManager().getStringFromConfig("WebServer.domain") +
                             ":" +
@@ -90,15 +87,15 @@ public class Command implements CommandExecutor, TabCompleter {
                     }
 
                     if (ws == null) {
-                        sender.sendMessage("WebServer was not started yet!");
+                        sender.sendMessage(Colors.translate("&8[&cWebServer&8] &cWebServer was not started yet!"));
                         return true;
                     }
                     ws.stop();
                     FileManager.setStringInConfig("WebServer.isRunning", String.valueOf(false));
                     if (!(ws.isAlive())) {
-                        sender.sendMessage("Webserver has been Stopped!");
+                        sender.sendMessage(Colors.translate("&8[&cWebServer&8] &aWebserver has been Stopped!"));
                     } else {
-                        sender.sendMessage("Webserver has not been Stopped!");
+                        sender.sendMessage(Colors.translate("&8[&cWebServer&8] &cWebserver has not been Stopped!"));
                     }
                     ws = null;
                     return true;
@@ -110,22 +107,27 @@ public class Command implements CommandExecutor, TabCompleter {
                     if(args.length > 1) {
                         switch (args[1]) {
                             case "config":
-                                sender.sendMessage("Reloading config...");
+                                sender.sendMessage(Colors.translate("&8[&cWebServer&8] &7Reloading config..."));
                                 new FileManager().reloadConfig();
-                                sender.sendMessage("Reloaded");
+                                sender.sendMessage(Colors.translate("&8[&cWebServer&8] &aReloaded"));
                                 return true;
                             case "plugin":
-                                sender.sendMessage("Reloading plugin...");
+                                sender.sendMessage(Colors.translate("&8[&cWebServer&8] &7Reloading plugin..."));
                                 Bukkit.getPluginManager().disablePlugin(Main.instance);
                                 Bukkit.getPluginManager().enablePlugin(Main.instance);
-                                sender.sendMessage("Reloaded");
+                                sender.sendMessage(Colors.translate("&8[&cWebServer&8] &aReloaded"));
                                 return true;
                         }
                     } else {
-                        sender.sendMessage("Please choose config/plugin");
+                        sender.sendMessage(Colors.translate("&8[&cWebServer&8] &bPlease choose config/plugin"));
                     }
                     return true;
-                case "type":
+
+                    //
+                    //TODO: Its for future
+                    //
+
+                /*case "type":
                     switch (args[1]) {
                         case "cdn":
                             sender.sendMessage("Setting to cdn...");
@@ -138,15 +140,19 @@ public class Command implements CommandExecutor, TabCompleter {
                             sender.sendMessage("Setted");
                             return true;
                     }
-                    return true;
+                    return true;*/
+
                 case "status":
-                    sender.sendMessage("Is Active: " + new FileManager().getBooleanFromConfig("WebServer.isRunning"));
-                    sender.sendMessage("Uptime: null"); //TODO: Add Uptime
-                    sender.sendMessage("Enable Log: true\n"); //TODO: Add toggle accesslog
-                    sender.sendMessage("Created by FungYY911 for everyone");
+                    if (new FileManager().getBooleanFromConfig("WebServer.isRunning")) { running = "&aOnline"; } else { running = "&cOffline"; }
+                    sender.sendMessage(Colors.translate("&8[&cWebServer&8] &8⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛"));
+                    sender.sendMessage(Colors.translate("&8[&cWebServer&8] &bStatus: " + running));
+                    sender.sendMessage(Colors.translate("&8[&cWebServer&8] &bUptime: &7null &8(&7This is in TODO&8)")); //TODO: Add Uptime
+                    sender.sendMessage(Colors.translate("&8[&cWebServer&8] &bAccesss Log: &aEnabled &8(&7This is in TODO&8)\n")); //TODO: Add toggle accesslog
+                    sender.sendMessage(Colors.translate("&8[&cWebServer&8] &bCreated by FungYY911 for everyone"));
+                    sender.sendMessage(Colors.translate("&8[&cWebServer&8] &8⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛"));
                     return true;
                 default:
-                    sender.sendMessage("Command not found!");
+                    sender.sendMessage(Colors.translate("&8[&cWebServer&8] &cCommand not found!"));
             }
         } else {
             sender.sendMessage(Colors.translate(new FileManager().getStringFromConfig("No-Permission")));

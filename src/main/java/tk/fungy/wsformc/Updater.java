@@ -19,8 +19,7 @@ import java.io.*;
 import java.net.URL;
 
 public class Updater implements Listener {
-    private static String currentVersion = new FileManager().getStringFromConfig("Version");
-    public static boolean toggleUpdates = new FileManager().getBooleanFromConfig("Version");
+    private static String currentVersion = Main.getInstance().getDescription().getVersion();
     public static String latestVersion;
     public static void startUpdater() {
         Bukkit.getScheduler().runTaskTimerAsynchronously(Main.instance, new Runnable() {
@@ -61,15 +60,6 @@ public class Updater implements Listener {
         Player player = event.getPlayer();
 
         if (!(player.hasPermission("ws.update") || player.hasPermission("ws.*"))) {
-            return;
-        }
-
-        if (!toggleUpdates) {
-            return;
-        }
-
-        if (currentVersion == null) {
-            Bukkit.getLogger().warning(Colors.translate("[WebServer] An error occured! Please report console error to our discord! https://codeitfor.fun/discord"));
             return;
         }
 

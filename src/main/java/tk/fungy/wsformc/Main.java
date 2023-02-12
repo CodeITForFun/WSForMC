@@ -46,10 +46,11 @@ public final class Main extends JavaPlugin {
         if (!(new FileManager().getBooleanFromConfig("Version"))) {
             new FileManager().setBooleanInConfig("Updates", true);
         }
-        Updater.startUpdater();
 
         int pluginId = 17696;
         Metrics metrics = new Metrics(Main.instance, pluginId);
+
+        Updater.startUpdater();
     }
 
     @Override
