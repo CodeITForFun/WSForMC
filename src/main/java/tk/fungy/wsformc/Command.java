@@ -34,7 +34,7 @@ public class Command implements CommandExecutor, TabCompleter {
             }
         }
 
-        if (args.length >= 0 && sender.hasPermission("ws.*")) {
+        if (args.length >= 0) {
             switch (args[0]) {
                 case "help":
                     TextComponent discord = new TextComponent(Colors.translate("&9&lDISCORD SUPPORT&7"));
@@ -159,6 +159,7 @@ public class Command implements CommandExecutor, TabCompleter {
                     if (new FileManager().getBooleanFromConfig("WebServer.isRunning")) { running = "&aOnline"; } else { running = "&cOffline"; }
                     sender.sendMessage(Colors.translate("&8[&cWebServer&8] &8⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛"));
                     sender.sendMessage(Colors.translate("&8[&cWebServer&8] &bStatus: " + running));
+                    sender.sendMessage(Colors.translate("&8[&cWebServer&8] &bBound on: " + new FileManager().getStringFromConfig("WebServer.domain") + ":" + new FileManager().getStringFromConfig("WebServer.port")));
                     sender.sendMessage(Colors.translate("&8[&cWebServer&8] &bUptime: &7null &8(&7This is in TODO&8)")); //TODO: Add Uptime
                     sender.sendMessage(Colors.translate("&8[&cWebServer&8] &bAccesss Log: &aEnabled &8(&7This is in TODO&8)\n")); //TODO: Add toggle accesslog
                     sender.sendMessage(Colors.translate("&8[&cWebServer&8] &bCreated by FungYY911 for everyone"));
