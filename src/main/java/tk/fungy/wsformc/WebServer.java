@@ -4,6 +4,7 @@ import fi.iki.elonen.NanoHTTPD;
 
 import java.io.*;
 import java.nio.file.NoSuchFileException;
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -91,6 +92,8 @@ public class WebServer extends NanoHTTPD {
                 } else {
                     Main.getInstance().getLogger().warning("Running! http://" + domain + ":" + port + "/");
                 }
+                Main.tc.reset();
+                Main.tc.start();
             } catch (IOException e) {
                 Main.getInstance().getLogger().warning("Couldn't start server: " + e.getMessage());
                 FileManager.setStringInConfig("WebServer.isRunning", String.valueOf(false));
@@ -98,6 +101,7 @@ public class WebServer extends NanoHTTPD {
     }
     public void stop() {
         super.stop();
+        Main.tc.stop();
         FileManager.setStringInConfig("WebServer.isRunning", String.valueOf(false));
         if (!(super.isAlive())) {
             Main.getInstance().getLogger().warning("Webserver has been Stopped!");

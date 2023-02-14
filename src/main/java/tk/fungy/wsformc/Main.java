@@ -12,6 +12,7 @@ public final class Main extends JavaPlugin {
     }
 
     public static Main instance;
+    public static TimeCounter tc = new TimeCounter ();
 
     @Override
     public void onEnable() {
