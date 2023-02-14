@@ -21,6 +21,8 @@ import java.net.URL;
 public class Updater implements Listener {
     private static String currentVersion = Main.getInstance().getDescription().getVersion();
     public static String latestVersion;
+    private static String user = "CodeITForFun";
+    private static String repo = "WSForMC";
     public static void startUpdater() {
         Bukkit.getScheduler().runTaskTimerAsynchronously(Main.instance, new Runnable() {
             @Override
@@ -31,7 +33,7 @@ public class Updater implements Listener {
     }
     private static void checkForUpdates() {
         try {
-            URL url = new URL("https://api.github.com/repos/CodeITForFun/WSForMC/releases"); // Replace with the URL to your GitHub releases
+            URL url = new URL("https://api.github.com/repos/"+ user + "/" + repo + "/releases"); // Replace with the URL to your GitHub releases
             BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
             StringBuilder result = new StringBuilder();
             String line;
