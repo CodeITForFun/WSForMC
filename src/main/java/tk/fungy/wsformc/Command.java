@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -50,6 +51,7 @@ public class Command implements CommandExecutor, TabCompleter {
                                     "\n   &a&lWebServer: \n" +
                                     "   &r&2/wsm start    &7Turns on WebServer\n" +
                                     "   &r&2/wsm stop    &7Turns off WebServer\n" +
+                                    "   &r&2/wsm update [domain] / [port]    &7Updates variable in config\n" +
                                     "   &b&lOthers: \n" +
                                     "   &r&9/wsm reload [config] / [plugin]    &7Reloads config/plugin\n" +
                                     "   &r&9/wsm status    &7Displays the status of the webserver\n" +
@@ -93,6 +95,59 @@ public class Command implements CommandExecutor, TabCompleter {
                             new FileManager().getStringFromConfig("WebServer.port")));
                     message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Click to open Website").create()));
                     player.spigot().sendMessage(message);
+                    return true;
+                case "update":
+                    if (!(sender.hasPermission("ws.set") || sender.hasPermission("ws.*"))) {
+                        sender.sendMessage(Colors.translate(new FileManager().getStringFromConfig("No-Permission")));
+                        return true;
+                    }
+                    if(args.length > 1) {
+                        switch (args[1]) {
+
+                            case "domain":
+
+                                if (args.length <= 2) {
+                                    sender.sendMessage(Colors.translate("&8[&cWebServer&8] &cPlease type your domain or ip."));
+                                    return true;
+                                }
+
+                                sender.sendMessage(Colors.translate("&8[&cWebServer&8] &7Setting domain..."));
+                                FileManager.setStringInConfig("WebServer.domain", args[2]);
+
+                                new FileManager().reloadConfig();
+
+                                sender.sendMessage(Colors.translate("&8[&cWebServer&8] &aNew domain has been set to " + args[2]));
+                                sender.sendMessage(Colors.translate("&8[&cWebServer&8] &7Please start and stop your webserver for effect."));
+                                return true;
+
+                            case "port":
+
+                                if (args.length <= 2) {
+                                    sender.sendMessage(Colors.translate("&8[&cWebServer&8] &cPlease type selected port."));
+                                    return true;
+                                }
+
+                                if (args[2].length() > 10) {
+                                    sender.sendMessage(Colors.translate("&8[&cWebServer&8] &cYou have too many numbers. Max is 10."));
+                                    return true;
+                                }
+
+                                if (!(new FileManager().containsDigits(args[2]))) {
+                                    sender.sendMessage(Colors.translate("&8[&cWebServer&8] &cPlease type only numbers."));
+                                    return true;
+                                }
+
+                                sender.sendMessage(Colors.translate("&8[&cWebServer&8] &7Setting port..."));
+
+                                FileManager.setIntegerInConfig("WebServer.port", Integer.valueOf(args[2]));
+
+                                sender.sendMessage(Colors.translate("&8[&cWebServer&8] &aNew port has been set to " + args[2]));
+                                sender.sendMessage(Colors.translate("&8[&cWebServer&8] &7Please start and stop your webserver for effect."));
+                                return true;
+                        }
+                    } else {
+                        sender.sendMessage(Colors.translate("&8[&cWebServer&8] &bPlease choose between domain or port"));
+                    }
                     return true;
                 case "stop":
                     if (!(sender.hasPermission("ws.stop") || sender.hasPermission("ws.*"))) {
@@ -163,7 +218,7 @@ public class Command implements CommandExecutor, TabCompleter {
                     sender.sendMessage(Colors.translate("&8[&cWebServer&8] &8⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛"));
                     sender.sendMessage(Colors.translate("&8[&cWebServer&8] &bStatus: " + running));
                     sender.sendMessage(Colors.translate("&8[&cWebServer&8] &bBound on: " + new FileManager().getStringFromConfig("WebServer.domain") + ":" + new FileManager().getStringFromConfig("WebServer.port")));
-                    sender.sendMessage(Colors.translate("&8[&cWebServer&8] &bUptime: &7" + timer)); //TODO: Add Uptime
+                    sender.sendMessage(Colors.translate("&8[&cWebServer&8] &bUptime: &7" + timer));
                     sender.sendMessage(Colors.translate("&8[&cWebServer&8] &bAccesss Log: &aEnabled &8(&7This is in TODO&8)\n")); //TODO: Add toggle accesslog
                     sender.sendMessage(Colors.translate("&8[&cWebServer&8] &bCreated by FungYY911 for everyone"));
                     sender.sendMessage(Colors.translate("&8[&cWebServer&8] &8⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛"));
@@ -188,6 +243,7 @@ public class Command implements CommandExecutor, TabCompleter {
                 arguments.add("status");
                 arguments.add("reload");
                 arguments.add("ver");
+                arguments.add("update");
             }
             return arguments;
         } else if (args.length == 2) {
@@ -197,8 +253,12 @@ public class Command implements CommandExecutor, TabCompleter {
                     arguments.add("config");
                     arguments.add("plugin");
                     return arguments;
+                case "update":
+                    List<String> arg = new ArrayList<>();
+                    arg.add("domain");
+                    arg.add("port");
+                    return arg;
             }
-
         }
         return null;
     }

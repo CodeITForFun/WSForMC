@@ -48,7 +48,7 @@ public class Updater implements Listener {
             if(currentVersion == null) { currentVersion = new FileManager().getStringFromConfig("Version"); }
 
             if (!currentVersion.equals(latestVersion)) {
-                Bukkit.getLogger().warning(Colors.translate("[WebServer] A new update is available: " + latestVersion + " Your version is: " + currentVersion + ". Download it here: &7https://www.spigotmc.org/resources/web-server-for-minecraft.107949/"));
+                Bukkit.getLogger().warning(Colors.translate("[WebServer] A new update is available: " + latestVersion + " Your version is: " + currentVersion + ". Download it here: https://www.spigotmc.org/resources/web-server-for-minecraft.107949/"));
             } else {
                 Bukkit.getLogger().warning(Colors.translate("[WebServer] You are using latest version"));
             }

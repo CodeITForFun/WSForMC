@@ -24,7 +24,25 @@ public class FileManager {
         } catch (IOException e) {
             Main.getInstance().getLogger().warning("Failed to set string. Executed with this error: \n" + e);
         }
-    }public static void setBooleanInConfig(String key, Boolean value) {
+    }
+    public static void setIntegerInConfig(String key, Integer value) {
+        config.set(key, value);
+        try {
+            config.save(configFile);
+        } catch (IOException e) {
+            Main.getInstance().getLogger().warning("Failed to set string. Executed with this error: \n" + e);
+        }
+    }
+    public boolean containsDigits(String StringInput) {
+        boolean containsDigits = StringInput.matches("[0-9]+");
+
+        if(containsDigits) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public static void setBooleanInConfig(String key, Boolean value) {
         config.set(key, value);
         try {
             config.save(configFile);
