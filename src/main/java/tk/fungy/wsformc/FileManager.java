@@ -16,7 +16,6 @@ public class FileManager {
     public static File logsFile = new File(Main.instance.getDataFolder(), "/logs/access.log");
     public static YamlConfiguration config;
     public static String ipaddr;
-    public boolean getBooleanFromConfig(String b) { return Boolean.parseBoolean(config.getString(String.valueOf(b))); }
     public static void setStringInConfig(String key, String value) {
         config.set(key, value);
         try {
@@ -120,6 +119,7 @@ public class FileManager {
         }
     }
 
+    public boolean getBooleanFromConfig(String b) { if (config == null) { config = new YamlConfiguration().loadConfiguration(configFile); } return Boolean.parseBoolean(config.getString(String.valueOf(b))); }
 
     public String getStringFromConfig(String string) {
         if (config == null) {

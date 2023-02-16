@@ -18,7 +18,6 @@ import static tk.fungy.wsformc.FileManager.logsFolder;
 public class WebServer extends NanoHTTPD {
     //static Integer port = Integer.valueOf(new FileManager().getStringFromConfig("WebServer.port"));
     //static String domain = new FileManager().getStringFromConfig("WebServer.domain");
-    static boolean secureb = new FileManager().getBooleanFromConfig("WebServer.ssl");
     public WebServer(int port) {
         super(port);
     }
@@ -91,7 +90,7 @@ public class WebServer extends NanoHTTPD {
             try {
                 super.start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
                 FileManager.setStringInConfig("WebServer.isRunning", String.valueOf(true));
-                if (secureb) {
+                if (new FileManager().getBooleanFromConfig("WebServer.ssl")) {
                     Main.getInstance().getLogger().warning("Running! https://" + new FileManager().getStringFromConfig("WebServer.domain") + ":" + Integer.valueOf(new FileManager().getStringFromConfig("WebServer.port")) + "/");
                 } else {
                     Main.getInstance().getLogger().warning("Running! http://" + new FileManager().getStringFromConfig("WebServer.domain") + ":" + Integer.valueOf(new FileManager().getStringFromConfig("WebServer.port")) + "/");
@@ -118,7 +117,7 @@ public class WebServer extends NanoHTTPD {
         String uri = session.getUri().toLowerCase();
         String hostHeader = session.getHeaders().get("host");
         if (hostHeader == null || !hostHeader.contains(new FileManager().getStringFromConfig("WebServer.domain") + ":" + Integer.valueOf(new FileManager().getStringFromConfig("WebServer.port")))) {
-            return newFixedLengthResponse(Response.Status.BAD_REQUEST, "text/plain", "DNS_PROBE_POSSIBLE");
+            return newFixedLengthResponse(Response.Status.BAD_REQUEST, "text/plain", "Permanent Redirect to " + new FileManager().getStringFromConfig("WebServer.domain") + ":" + Integer.valueOf(new FileManager().getStringFromConfig("WebServer.port")));
         }
 
         if (uri.endsWith("/")) { uri = "/index.html"; }
