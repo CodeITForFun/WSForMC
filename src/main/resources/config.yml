@@ -30,7 +30,7 @@
 ########################################################################
 WebServer:
   port: 8080 # Set this to your open port
-  isRunning: false # Automatically run server on crash if was started
+  isRunning: false # Automatically run web on crash, if was started
   domain: "CHANGE_ME" # Domain of your server, default is ip of your server.
   ssl: false # toggle: true/false, set this to true only if you have generated certificate and webserver pointed to domain
 

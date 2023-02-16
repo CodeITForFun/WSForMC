@@ -11,8 +11,8 @@ import java.util.Date;
 public class FileManager {
 
     public static File configFile = new File(Main.instance.getDataFolder(), "config.yml");
-    public static File webFolder = new File(Main.instance.getDataFolder(), "web");
-    public static File logsFolder = new File(Main.instance.getDataFolder(), "logs");
+    public static File webFolder = new File(Main.instance.getDataFolder(), "/web");
+    public static File logsFolder = new File(Main.instance.getDataFolder(), "/logs");
     public static File logsFile = new File(Main.instance.getDataFolder(), "/logs/access.log");
     public static YamlConfiguration config;
     public static String ipaddr;
@@ -75,7 +75,52 @@ public class FileManager {
         }
         if (!logsFolder.exists()) logsFolder.mkdir();
         if(!webFolder.exists()) webFolder.mkdir();
+        saveMyResource("index.html", false);
     }
+
+    public void saveMyResource(String resourceName, boolean replace) {
+        // Get the plugin's data folder
+        File dataFolder = Main.instance.getDataFolder();
+
+        // Create the destination file
+        File destFile = new File(dataFolder, resourceName);
+
+        // If the file already exists and 'replace' is false, return early
+        if (destFile.exists() && !replace) {
+            return;
+        }
+
+        // Open the resource file
+        InputStream is = Main.instance.getResource(resourceName);
+
+        // If the resource file is not found, throw an exception
+        if (is == null) {
+            throw new IllegalArgumentException("Resource not found: " + resourceName);
+        }
+
+        try {
+            // Create the parent directories if they don't exist
+            destFile.getParentFile().mkdirs();
+
+            // Open the destination file for writing
+            OutputStream os = new FileOutputStream(destFile);
+
+            // Copy the contents of the resource to the destination file
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = is.read(buffer)) > 0) {
+                os.write(buffer, 0, length);
+            }
+
+            // Close the input and output streams
+            is.close();
+            os.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     public String getStringFromConfig(String string) {
         if (config == null) {
             config = new YamlConfiguration().loadConfiguration(configFile);
