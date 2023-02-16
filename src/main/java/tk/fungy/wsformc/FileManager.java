@@ -75,15 +75,15 @@ public class FileManager {
         }
         if (!logsFolder.exists()) logsFolder.mkdir();
         if(!webFolder.exists()) webFolder.mkdir();
-        saveMyResource("index.html", false);
+        saveMyResource("index.html", "/web/", false);
     }
 
-    public void saveMyResource(String resourceName, boolean replace) {
+    public void saveMyResource(String resourceName, String destination, boolean replace) {
         // Get the plugin's data folder
         File dataFolder = Main.instance.getDataFolder();
 
         // Create the destination file
-        File destFile = new File(dataFolder, resourceName);
+        File destFile = new File(dataFolder + destination, resourceName);
 
         // If the file already exists and 'replace' is false, return early
         if (destFile.exists() && !replace) {
