@@ -16,9 +16,9 @@ import java.util.regex.Pattern;
 import static tk.fungy.wsformc.FileManager.logsFolder;
 
 public class WebServer extends NanoHTTPD {
-    static Integer port = Integer.valueOf(new FileManager().getStringFromConfig("WebServer.port"));
+    //static Integer port = Integer.valueOf(new FileManager().getStringFromConfig("WebServer.port"));
+    //static String domain = new FileManager().getStringFromConfig("WebServer.domain");
     static boolean secureb = new FileManager().getBooleanFromConfig("WebServer.ssl");
-    static String domain = new FileManager().getStringFromConfig("WebServer.domain");
     public WebServer(int port) {
         super(port);
     }
@@ -28,7 +28,7 @@ public class WebServer extends NanoHTTPD {
     public static boolean running = new FileManager().getBooleanFromConfig("WebServer.isRunning");
     private File logFile;
     public WebServer() {
-        super(port);
+        super(Integer.valueOf(new FileManager().getStringFromConfig("WebServer.port")));
         logFile = new File(Main.instance.getDataFolder() + "/logs/access.log");
     }
 
@@ -92,9 +92,9 @@ public class WebServer extends NanoHTTPD {
                 super.start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
                 FileManager.setStringInConfig("WebServer.isRunning", String.valueOf(true));
                 if (secureb) {
-                    Main.getInstance().getLogger().warning("Running! https://" + domain + ":" + port + "/");
+                    Main.getInstance().getLogger().warning("Running! https://" + new FileManager().getStringFromConfig("WebServer.domain") + ":" + Integer.valueOf(new FileManager().getStringFromConfig("WebServer.port")) + "/");
                 } else {
-                    Main.getInstance().getLogger().warning("Running! http://" + domain + ":" + port + "/");
+                    Main.getInstance().getLogger().warning("Running! http://" + new FileManager().getStringFromConfig("WebServer.domain") + ":" + Integer.valueOf(new FileManager().getStringFromConfig("WebServer.port")) + "/");
                 }
                 Main.tc.reset();
                 Main.tc.start();
@@ -117,7 +117,7 @@ public class WebServer extends NanoHTTPD {
     public Response serve(IHTTPSession session) {
         String uri = session.getUri().toLowerCase();
         String hostHeader = session.getHeaders().get("host");
-        if (hostHeader == null || !hostHeader.contains(domain + ":" + port)) {
+        if (hostHeader == null || !hostHeader.contains(new FileManager().getStringFromConfig("WebServer.domain") + ":" + Integer.valueOf(new FileManager().getStringFromConfig("WebServer.port")))) {
             return newFixedLengthResponse(Response.Status.BAD_REQUEST, "text/plain", "DNS_PROBE_POSSIBLE");
         }
 
