@@ -17,6 +17,7 @@ public class FileManager {
     public static YamlConfiguration config;
     public static String ipaddr;
     public static void setStringInConfig(String key, String value) {
+        if (config == null) { config = new YamlConfiguration().loadConfiguration(configFile); }
         config.set(key, value);
         try {
             config.save(configFile);
@@ -25,6 +26,7 @@ public class FileManager {
         }
     }
     public static void setIntegerInConfig(String key, Integer value) {
+        if (config == null) { config = new YamlConfiguration().loadConfiguration(configFile); }
         config.set(key, value);
         try {
             config.save(configFile);
@@ -33,6 +35,7 @@ public class FileManager {
         }
     }
     public boolean containsDigits(String StringInput) {
+        if (config == null) { config = new YamlConfiguration().loadConfiguration(configFile); }
         boolean containsDigits = StringInput.matches("[0-9]+");
 
         if(containsDigits) {
@@ -42,6 +45,7 @@ public class FileManager {
         }
     }
     public static void setBooleanInConfig(String key, Boolean value) {
+        if (config == null) { config = new YamlConfiguration().loadConfiguration(configFile); }
         config.set(key, value);
         try {
             config.save(configFile);
@@ -121,12 +125,7 @@ public class FileManager {
 
     public boolean getBooleanFromConfig(String b) { if (config == null) { config = new YamlConfiguration().loadConfiguration(configFile); } return Boolean.parseBoolean(config.getString(String.valueOf(b))); }
 
-    public String getStringFromConfig(String string) {
-        if (config == null) {
-            config = new YamlConfiguration().loadConfiguration(configFile);
-        }
-            return config.getString(string);
-    }
+    public String getStringFromConfig(String string) { if (config == null) { config = new YamlConfiguration().loadConfiguration(configFile); } return config.getString(string); }
     public void reloadConfig() {
         File cfgFile = new File(Main.instance.getDataFolder(), "config.yml");
         config = YamlConfiguration.loadConfiguration(cfgFile);
