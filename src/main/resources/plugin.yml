@@ -4,6 +4,7 @@ main: tk.fungy.wsformc.Main
 api-version: 1.19
 authors: [ FungY911 ]
 description: Host your website in your Minecraft Server!
+softdepend: [ PlaceholderAPI ]
 commands:
   wsm:
     usage: /wsm

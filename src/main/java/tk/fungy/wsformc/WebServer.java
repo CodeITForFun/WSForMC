@@ -1,6 +1,8 @@
 package tk.fungy.wsformc;
 
 import fi.iki.elonen.NanoHTTPD;
+import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.Bukkit;
 
 import java.io.*;
 import java.nio.file.NoSuchFileException;
@@ -8,6 +10,8 @@ import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static tk.fungy.wsformc.FileManager.logsFolder;
 
@@ -136,12 +140,43 @@ public class WebServer extends NanoHTTPD {
                 throw new RuntimeException(e);
             }
             if (Method.GET.equals(method) && "/".equals(uri)) file = new File(Main.instance.getDataFolder() + "/web/" + "index.html".toLowerCase());
-            return newChunkedResponse(Response.Status.OK, mimeType,
-                    new FileInputStream(file));
+
+            if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+                StringBuilder fileContent = new StringBuilder();
+                try (BufferedReader reader = new BufferedReader(new FileReader(Main.instance.getDataFolder() + "/web/" + uri.toLowerCase()))) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        fileContent.append(line).append("\n");
+                    }
+                } catch (IOException e) {
+                    return newFixedLengthResponse(Response.Status.INTERNAL_ERROR, "text/plain", "404 File Not Found - " + uri);
+                }
+
+                String placeholderRegex = "%(.*?)%";
+
+                Pattern pattern = Pattern.compile(placeholderRegex);
+                Matcher matcher = pattern.matcher(fileContent);
+                StringBuffer modifiedContentBuffer = new StringBuffer();
+                while (matcher.find()) {
+                    String placeholder = matcher.group(1);
+                    String resolvedValue = PlaceholderAPI.setPlaceholders(null, "%" + placeholder + "%");
+                    matcher.appendReplacement(modifiedContentBuffer, Matcher.quoteReplacement(resolvedValue));
+                }
+
+                matcher.appendTail(modifiedContentBuffer);
+
+                String modifiedContent = modifiedContentBuffer.toString();
+                Response response = newFixedLengthResponse(Response.Status.OK, mimeType, modifiedContent);
+                return response;
+            } else {
+                return newChunkedResponse(Response.Status.OK, mimeType, new FileInputStream(file));
+            }
+
         } catch (FileNotFoundException e) {
             return newFixedLengthResponse(Response.Status.NOT_FOUND, "text/plain",
                     "404 File Not Found - " + uri);
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
         }
-
     }
 }

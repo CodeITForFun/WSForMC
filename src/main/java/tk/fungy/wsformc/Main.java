@@ -1,6 +1,7 @@
 package tk.fungy.wsformc;
 
 import org.bstats.bukkit.Metrics;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.net.UnknownHostException;
@@ -42,14 +43,15 @@ public final class Main extends JavaPlugin {
             }
         }
         FileManager.setStringInConfig("Version", getDescription().getVersion());
-        if (!(new FileManager().getBooleanFromConfig("Version"))) {
-            new FileManager().setBooleanInConfig("Updates", true);
-        }
 
         int pluginId = 17696;
         Metrics metrics = new Metrics(Main.instance, pluginId);
 
         Updater.startUpdater();
+
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") == null) {
+            getLogger().warning("Could not find PlaceholderAPI! This plugin is required for WebServer placeholders.");
+        }
     }
 
     @Override
