@@ -123,9 +123,47 @@ public class FileManager {
         }
     }
 
-    public boolean getBooleanFromConfig(String b) { if (config == null) { config = new YamlConfiguration().loadConfiguration(configFile); } return Boolean.parseBoolean(config.getString(String.valueOf(b))); }
+    public boolean getBooleanFromConfig(String b) {
+        if (config == null) {
+            config = new YamlConfiguration().loadConfiguration(configFile);
+        } return config.getBoolean(b);
+    }
 
-    public String getStringFromConfig(String string) { if (config == null) { config = new YamlConfiguration().loadConfiguration(configFile); } return config.getString(string); }
+    public String getStringFromConfig(String string) {
+        if (config == null) {
+            config = new YamlConfiguration().loadConfiguration(configFile);
+        } return config.getString(string);
+    }
+    public boolean checkBooleanFromConfig(String key, Boolean string) {
+        if (config == null) {
+            config = new YamlConfiguration().loadConfiguration(configFile);
+        } if (config.get(key) != null) {
+            return true;
+        } else {
+            config.set(key, string);
+            return false;
+        }
+    }
+    public boolean checkStringFromConfig(String key, String string) {
+        if (config == null) {
+            config = new YamlConfiguration().loadConfiguration(configFile);
+        } if (config.get(key) != null) {
+            return true;
+        } else {
+            config.set(key, string);
+            return false;
+        }
+    }
+    public boolean checkIntFromConfig(String key, Integer string) {
+        if (config == null) {
+            config = new YamlConfiguration().loadConfiguration(configFile);
+        } if (config.get(key) != null) {
+            return true;
+        } else {
+            config.set(key, string);
+            return false;
+        }
+    }
     public void reloadConfig() {
         File cfgFile = new File(Main.instance.getDataFolder(), "config.yml");
         config = YamlConfiguration.loadConfiguration(cfgFile);

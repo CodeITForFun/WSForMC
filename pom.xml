@@ -6,7 +6,7 @@
 
     <groupId>tk.fungy</groupId>
     <artifactId>WebServerForMC</artifactId>
-    <version>1.3.2</version>
+    <version>1.3.2-devs-150</version>
     <packaging>jar</packaging>
 
     <name>WebServerForMinecraft</name>
