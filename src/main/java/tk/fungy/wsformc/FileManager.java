@@ -134,6 +134,11 @@ public class FileManager {
             config = new YamlConfiguration().loadConfiguration(configFile);
         } return config.getString(string);
     }
+    public Integer getIntegerFromConfig(String integer) {
+        if (config == null) {
+            config = new YamlConfiguration().loadConfiguration(configFile);
+        } return config.getInt(integer);
+    }
     public boolean checkBooleanFromConfig(String key, Boolean string) {
         if (config == null) {
             config = new YamlConfiguration().loadConfiguration(configFile);

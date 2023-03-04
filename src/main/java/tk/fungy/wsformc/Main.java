@@ -32,7 +32,7 @@ public final class Main extends JavaPlugin {
         instance.getCommand("webserver").setExecutor(new Command());
         if (WebServer.running) {
             if (Command.ws == null) Command.ws = new WebServer();
-            getLogger().info("Starting Webserbver.");
+            getLogger().info("Starting Webserver.");
             Command.ws.start();
         }
         if (FileManager.config == null) {
@@ -44,13 +44,12 @@ public final class Main extends JavaPlugin {
         }
         FileManager.setStringInConfig("Version", getDescription().getVersion());
 
-        int pluginId = 17696;
-        Metrics metrics = new Metrics(Main.instance, pluginId);
+        Metrics metrics = new Metrics(Main.instance, 17696);
 
         Updater.startUpdater();
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") == null) {
-            getLogger().warning("Could not find PlaceholderAPI! This plugin is required for WebServer placeholders.");
+            getLogger().warning("Could not find PlaceholderAPI! This plugin is required for Web placeholders.");
         }
     }
 

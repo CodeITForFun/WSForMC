@@ -161,7 +161,7 @@ public class Command implements CommandExecutor, TabCompleter {
                         return true;
                     }
                     ws.stop();
-                    FileManager.setStringInConfig("WebServer.isRunning", String.valueOf(false));
+                    FileManager.setBooleanInConfig("WebServer.isRunning", false);
                     if (!(ws.isAlive())) {
                         sender.sendMessage(Colors.translate("&8[&cWebServer&8] &aWebserver has been Stopped!"));
                     } else {
