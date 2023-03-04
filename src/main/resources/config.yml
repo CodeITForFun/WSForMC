@@ -1,6 +1,6 @@
 ########################################################################
 #                                                                      #
-#                The WebServer for Minecraft Plugin                    #
+#                The WebServerManager for Minecraft Plugin                    #
 #                                                                      #
 ########################################################################
 #                                                                      #
@@ -34,7 +34,7 @@ WebServer:
   domain: "CHANGE_ME" # Domain of your server, default is ip of your server.
   ssl: false # toggle: true/false, set this to true only if you have generated certificate and webserver pointed to domain.
   accessLog: true # toggle: true/false, acceslog from website.
-  threads: 10 # Maximum number of threads, 0 for unlimited
+  threads: 0 # Maximum number of threads, 0 for unlimited
 
 No-Permission: "&cYou dont have permissions to do this command"
 Version: "1.3.2" # Do not edit this line!

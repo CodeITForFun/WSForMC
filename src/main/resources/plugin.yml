@@ -1,4 +1,4 @@
-name: WebServer
+name: WebServerManager
 version: '${project.version}'
 main: tk.fungy.wsformc.Main
 api-version: 1.19

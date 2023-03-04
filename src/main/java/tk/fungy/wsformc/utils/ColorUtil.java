@@ -1,10 +1,10 @@
-package tk.fungy.wsformc;
+package tk.fungy.wsformc.utils;
 
 import org.bukkit.ChatColor;
 
 import java.util.List;
 
-public class Colors {
+public class ColorUtil {
     public static List<String> translate;
     public static final String WITH_DELIMITER = "((?<=%1$s)|(?=%1$s))";
 

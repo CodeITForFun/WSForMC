@@ -1,13 +1,13 @@
-package tk.fungy.wsformc;
+package tk.fungy.wsformc.managers;
 
 import java.util.concurrent.TimeUnit;
 
-public class TimeCounter {
+public class TimeCounterManager {
     private long startTime;
     private long stopTime;
     public static boolean running;
 
-    public TimeCounter() {
+    public TimeCounterManager() {
         reset();
     }
 

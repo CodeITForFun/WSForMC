@@ -1,39 +1,36 @@
-package tk.fungy.wsformc;
+package tk.fungy.wsformc.managers;
 
 import fi.iki.elonen.NanoHTTPD;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
+import tk.fungy.wsformc.Main;
 
 import java.io.*;
 import java.nio.file.NoSuchFileException;
-import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static tk.fungy.wsformc.FileManager.logsFolder;
+import static tk.fungy.wsformc.managers.FileManager.logsFolder;
 
-public class WebServer extends NanoHTTPD {
-    //static Integer port = Integer.valueOf(new FileManager().getStringFromConfig("WebServer.port"));
-    //static String domain = new FileManager().getStringFromConfig("WebServer.domain");
-    public WebServer(int port) {
+public class WebServerManager extends NanoHTTPD {
+    //static Integer port = Integer.valueOf(new FileManager().getStringFromConfig("WebServerManager.port"));
+    //static String domain = new FileManager().getStringFromConfig("WebServerManager.domain");
+    public WebServerManager(int port) {
         super(port);
     }
-    public WebServer(String hostname, int port) {
+    public WebServerManager(String hostname, int port) {
         super(hostname, port);
     }
-    public static boolean running = new FileManager().getBooleanFromConfig("WebServer.isRunning");
+    public static boolean running = new FileManager().getBooleanFromConfig("WebServerManager.isRunning");
     private File logFile;
-    public WebServer() {
-        super(Integer.valueOf(new FileManager().getStringFromConfig("WebServer.port")));
-        logFile = new File(Main.instance.getDataFolder() + "/logs/access.log");
+    public WebServerManager() {
+        super(Integer.valueOf(new FileManager().getStringFromConfig("WebServerManager.port")));
+        logFile = new File(Main.getInstance().getDataFolder() + "/logs/access.log");
     }
 
     private String getMimeType(String uri) {
@@ -92,13 +89,13 @@ public class WebServer extends NanoHTTPD {
 
 
     public void start() {
-        int maxThreads = new FileManager().getIntegerFromConfig("WebServer.threads"); // maximum number of threads
+        int maxThreads = new FileManager().getIntegerFromConfig("WebServerManager.threads"); // maximum number of threads
         if (maxThreads == 0) {
             try {
                 super.start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
             } catch (IOException e) {
                 Main.getInstance().getLogger().warning("Couldn't start server: " + e.getMessage());
-                FileManager.setBooleanInConfig("WebServer.isRunning", false);
+                FileManager.setBooleanInConfig("WebServerManager.isRunning", false);
             }
         } else {
             ExecutorService executorService = Executors.newFixedThreadPool(maxThreads);
@@ -107,15 +104,15 @@ public class WebServer extends NanoHTTPD {
                     super.start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
                 } catch (IOException e) {
                     Main.getInstance().getLogger().warning("Couldn't start server: " + e.getMessage());
-                    FileManager.setBooleanInConfig("WebServer.isRunning", false);
+                    FileManager.setBooleanInConfig("WebServerManager.isRunning", false);
                 }
             });
         }
-        FileManager.setBooleanInConfig("WebServer.isRunning", true);
-        if (new FileManager().getBooleanFromConfig("WebServer.ssl")) {
-            Main.getInstance().getLogger().warning("Running! https://" + new FileManager().getStringFromConfig("WebServer.domain") + ":" + Integer.valueOf(new FileManager().getStringFromConfig("WebServer.port")) + "/");
+        FileManager.setBooleanInConfig("WebServerManager.isRunning", true);
+        if (new FileManager().getBooleanFromConfig("WebServerManager.ssl")) {
+            Main.getInstance().getLogger().warning("Running! https://" + new FileManager().getStringFromConfig("WebServerManager.domain") + ":" + Integer.valueOf(new FileManager().getStringFromConfig("WebServerManager.port")) + "/");
         } else {
-            Main.getInstance().getLogger().warning("Running! http://" + new FileManager().getStringFromConfig("WebServer.domain") + ":" + Integer.valueOf(new FileManager().getStringFromConfig("WebServer.port")) + "/");
+            Main.getInstance().getLogger().warning("Running! http://" + new FileManager().getStringFromConfig("WebServerManager.domain") + ":" + Integer.valueOf(new FileManager().getStringFromConfig("WebServerManager.port")) + "/");
         }
         Main.tc.reset();
         Main.tc.start();
@@ -123,28 +120,28 @@ public class WebServer extends NanoHTTPD {
     public void stop() {
         super.stop();
         Main.tc.stop();
-        FileManager.setBooleanInConfig("WebServer.isRunning", false);
+        FileManager.setBooleanInConfig("WebServerManager.isRunning", false);
         if (!(super.isAlive())) {
             Main.getInstance().getLogger().warning("Webserver has been Stopped!");
         } else {
-            Main.getInstance().getLogger().warning("Webserver has not been Stopped! Are you started the WebServer?");
+            Main.getInstance().getLogger().warning("Webserver has not been Stopped! Are you started the WebServerManager?");
         }
     }
     @Override
     public Response serve(IHTTPSession session) {
         String uri = session.getUri().toLowerCase();
         String hostHeader = session.getHeaders().get("host");
-        if (hostHeader == null || !hostHeader.contains(new FileManager().getStringFromConfig("WebServer.domain"))) {
-            return newFixedLengthResponse(Response.Status.BAD_REQUEST, "text/plain", "Permanent Redirect to " + new FileManager().getStringFromConfig("WebServer.domain") + ":" + Integer.valueOf(new FileManager().getStringFromConfig("WebServer.port")));
+        if (hostHeader == null || !hostHeader.contains(new FileManager().getStringFromConfig("WebServerManager.domain"))) {
+            return newFixedLengthResponse(Response.Status.BAD_REQUEST, "text/plain", "Permanent Redirect to " + new FileManager().getStringFromConfig("WebServerManager.domain") + ":" + Integer.valueOf(new FileManager().getStringFromConfig("WebServerManager.port")));
         }
 
         if (uri.endsWith("/")) { uri = "/index.html"; }
 
         Method method = session.getMethod();
         String mimeType = getMimeType(uri);
-        File file = new File(Main.instance.getDataFolder() + "/web/" + uri);
+        File file = new File(Main.getInstance().getDataFolder() + "/web/" + uri);
         try {
-            if (new FileManager().getBooleanFromConfig("WebServer.accessLog")) {
+            if (new FileManager().getBooleanFromConfig("WebServerManager.accessLog")) {
                 try (FileWriter writer = new FileWriter(logFile, true)) {
                     Map<String, String> headers = session.getHeaders();
                     String referer = headers.get("referer");
@@ -158,18 +155,18 @@ public class WebServer extends NanoHTTPD {
                     throw new RuntimeException(e);
                 }
             }
-            if (Method.GET.equals(method) && "/".equals(uri)) file = new File(Main.instance.getDataFolder() + "/web/" + "index.html".toLowerCase());
+            if (Method.GET.equals(method) && "/".equals(uri)) file = new File(Main.getInstance().getDataFolder() + "/web/" + "index.html".toLowerCase());
 
             if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
 
                 StringBuilder fileContent = new StringBuilder();
-                try (BufferedReader reader = new BufferedReader(new FileReader(Main.instance.getDataFolder() + "/web/" + uri.toLowerCase()))) {
+                try (BufferedReader reader = new BufferedReader(new FileReader(Main.getInstance().getDataFolder() + "/web/" + uri.toLowerCase()))) {
                     String line;
                     while ((line = reader.readLine()) != null) {
                         fileContent.append(line).append("\n");
                     }
                 } catch (IOException e) {
-                    return newFixedLengthResponse(Response.Status.INTERNAL_ERROR, "text/plain", "404 File Not Found - " + uri);
+                    return newFixedLengthResponse(Response.Status.NOT_FOUND, "text/plain", "404 File Not Found - " + uri);
                 }
 
                 String placeholderRegex = "%(.*?)%";

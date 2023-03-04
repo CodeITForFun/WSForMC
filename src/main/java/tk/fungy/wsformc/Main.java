@@ -3,6 +3,8 @@ package tk.fungy.wsformc;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+import tk.fungy.wsformc.commands.WSMCommand;
+import tk.fungy.wsformc.managers.*;
 
 import java.net.UnknownHostException;
 
@@ -12,14 +14,14 @@ public final class Main extends JavaPlugin {
         return instance;
     }
 
-    public static Main instance;
-    public static TimeCounter tc = new TimeCounter ();
+    private static Main instance;
+    public static TimeCounterManager tc = new TimeCounterManager();
 
     @Override
     public void onEnable() {
         instance = this;
         getLogger().info("Starting plugin...");
-        getServer().getPluginManager().registerEvents(new Updater(), Main.instance);
+        getServer().getPluginManager().registerEvents(new UpdateManager(), Main.getInstance());
         getLogger().info("Loading File Manager.");
         try {
             new FileManager().startup();
@@ -28,12 +30,12 @@ public final class Main extends JavaPlugin {
         }
         new FileManager().removeLogFile();
         getLogger().info("Loading Assets.");
-        instance.getCommand("wsm").setExecutor(new Command());
-        instance.getCommand("webserver").setExecutor(new Command());
-        if (WebServer.running) {
-            if (Command.ws == null) Command.ws = new WebServer();
+        getInstance().getCommand("wsm").setExecutor(new WSMCommand());
+        getInstance().getCommand("webserver").setExecutor(new WSMCommand());
+        if (WebServerManager.running) {
+            if (WSMCommand.ws == null) WSMCommand.ws = new WebServerManager();
             getLogger().info("Starting Webserver.");
-            Command.ws.start();
+            WSMCommand.ws.start();
         }
         if (FileManager.config == null) {
             try {
@@ -44,9 +46,9 @@ public final class Main extends JavaPlugin {
         }
         FileManager.setStringInConfig("Version", getDescription().getVersion());
 
-        Metrics metrics = new Metrics(Main.instance, 17696);
+        Metrics metrics = new Metrics(Main.getInstance(), 17696);
 
-        Updater.startUpdater();
+        UpdateManager.startUpdater();
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") == null) {
             getLogger().warning("Could not find PlaceholderAPI! This plugin is required for Web placeholders.");

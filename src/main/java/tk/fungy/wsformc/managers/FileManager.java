@@ -1,6 +1,7 @@
-package tk.fungy.wsformc;
+package tk.fungy.wsformc.managers;
 
 import org.bukkit.configuration.file.YamlConfiguration;
+import tk.fungy.wsformc.Main;
 
 import java.io.*;
 import java.net.URL;
@@ -10,10 +11,10 @@ import java.util.Date;
 
 public class FileManager {
 
-    public static File configFile = new File(Main.instance.getDataFolder(), "config.yml");
-    public static File webFolder = new File(Main.instance.getDataFolder(), "/web");
-    public static File logsFolder = new File(Main.instance.getDataFolder(), "/logs");
-    public static File logsFile = new File(Main.instance.getDataFolder(), "/logs/access.log");
+    public static File configFile = new File(Main.getInstance().getDataFolder(), "config.yml");
+    public static File webFolder = new File(Main.getInstance().getDataFolder(), "/web");
+    public static File logsFolder = new File(Main.getInstance().getDataFolder(), "/logs");
+    public static File logsFile = new File(Main.getInstance().getDataFolder(), "/logs/access.log");
     public static YamlConfiguration config;
     public static String ipaddr;
     public static void setStringInConfig(String key, String value) {
@@ -57,9 +58,10 @@ public class FileManager {
 
     public void startup() throws UnknownHostException {
         if(!configFile.exists()) {
-            Main.instance.saveResource("config.yml", true);
+            Main.getInstance().saveResource("config.yml", true);
             config = new YamlConfiguration().loadConfiguration(configFile);
-            String domain = getStringFromConfig("WebServer.domain");
+            //new ConfigFixManager().autofixConfig();
+            String domain = getStringFromConfig("WebServerManager.domain");
             if (domain.equalsIgnoreCase("CHANGE_ME")) {
                 try {
                     URL url = new URL("http://checkip.amazonaws.com");
@@ -71,9 +73,9 @@ public class FileManager {
                 }
                     ipaddr.replace(" ", "");
                     ipaddr.replace("[STDOUT]", "");
-                FileManager.setStringInConfig("WebServer.domain", ipaddr);
+                FileManager.setStringInConfig("WebServerManager.domain", ipaddr);
             }
-            File cfgFile = new File(Main.instance.getDataFolder(), "config.yml");
+            File cfgFile = new File(Main.getInstance().getDataFolder(), "config.yml");
             config = YamlConfiguration.loadConfiguration(cfgFile);
         }
         if (!logsFolder.exists()) logsFolder.mkdir();
@@ -83,7 +85,7 @@ public class FileManager {
 
     public void saveMyResource(String resourceName, String destination, boolean replace) {
         // Get the plugin's data folder
-        File dataFolder = Main.instance.getDataFolder();
+        File dataFolder = Main.getInstance().getDataFolder();
 
         // Create the destination file
         File destFile = new File(dataFolder + destination, resourceName);
@@ -94,7 +96,7 @@ public class FileManager {
         }
 
         // Open the resource file
-        InputStream is = Main.instance.getResource(resourceName);
+        InputStream is = Main.getInstance().getResource(resourceName);
 
         // If the resource file is not found, throw an exception
         if (is == null) {
@@ -170,14 +172,14 @@ public class FileManager {
         }
     }
     public void reloadConfig() {
-        File cfgFile = new File(Main.instance.getDataFolder(), "config.yml");
+        File cfgFile = new File(Main.getInstance().getDataFolder(), "config.yml");
         config = YamlConfiguration.loadConfiguration(cfgFile);
     }
 
     public void removeLogFile() {
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy_ss:mm:HH");
             String newFileName = dateFormat.format(new Date()) + ".log";
-            File newFile = new File(Main.instance.getDataFolder(), "logs/" + newFileName);
+            File newFile = new File(Main.getInstance().getDataFolder(), "logs/" + newFileName);
             logsFile.renameTo(newFile);
     }
 }
