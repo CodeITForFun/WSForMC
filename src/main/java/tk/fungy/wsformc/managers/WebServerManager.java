@@ -26,10 +26,10 @@ public class WebServerManager extends NanoHTTPD {
     public WebServerManager(String hostname, int port) {
         super(hostname, port);
     }
-    public static boolean running = new FileManager().getBooleanFromConfig("WebServerManager.isRunning");
+    public static boolean running = new FileManager().getBooleanFromConfig("WebServer.isRunning");
     private File logFile;
     public WebServerManager() {
-        super(Integer.valueOf(new FileManager().getStringFromConfig("WebServerManager.port")));
+        super(Integer.valueOf(new FileManager().getStringFromConfig("WebServer.port")));
         logFile = new File(Main.getInstance().getDataFolder() + "/logs/access.log");
     }
 
@@ -89,13 +89,13 @@ public class WebServerManager extends NanoHTTPD {
 
 
     public void start() {
-        int maxThreads = new FileManager().getIntegerFromConfig("WebServerManager.threads"); // maximum number of threads
+        int maxThreads = new FileManager().getIntegerFromConfig("WebServer.threads"); // maximum number of threads
         if (maxThreads == 0) {
             try {
                 super.start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
             } catch (IOException e) {
                 Main.getInstance().getLogger().warning("Couldn't start server: " + e.getMessage());
-                FileManager.setBooleanInConfig("WebServerManager.isRunning", false);
+                FileManager.setBooleanInConfig("WebServer.isRunning", false);
             }
         } else {
             ExecutorService executorService = Executors.newFixedThreadPool(maxThreads);
@@ -104,11 +104,11 @@ public class WebServerManager extends NanoHTTPD {
                     super.start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
                 } catch (IOException e) {
                     Main.getInstance().getLogger().warning("Couldn't start server: " + e.getMessage());
-                    FileManager.setBooleanInConfig("WebServerManager.isRunning", false);
+                    FileManager.setBooleanInConfig("WebServer.isRunning", false);
                 }
             });
         }
-        FileManager.setBooleanInConfig("WebServerManager.isRunning", true);
+        FileManager.setBooleanInConfig("WebServer.isRunning", true);
         if (new FileManager().getBooleanFromConfig("WebServerManager.ssl")) {
             Main.getInstance().getLogger().warning("Running! https://" + new FileManager().getStringFromConfig("WebServerManager.domain") + ":" + Integer.valueOf(new FileManager().getStringFromConfig("WebServerManager.port")) + "/");
         } else {
@@ -120,7 +120,7 @@ public class WebServerManager extends NanoHTTPD {
     public void stop() {
         super.stop();
         Main.tc.stop();
-        FileManager.setBooleanInConfig("WebServerManager.isRunning", false);
+        FileManager.setBooleanInConfig("WebServer.isRunning", false);
         if (!(super.isAlive())) {
             Main.getInstance().getLogger().warning("Webserver has been Stopped!");
         } else {
@@ -131,7 +131,7 @@ public class WebServerManager extends NanoHTTPD {
     public Response serve(IHTTPSession session) {
         String uri = session.getUri().toLowerCase();
         String hostHeader = session.getHeaders().get("host");
-        if (hostHeader == null || !hostHeader.contains(new FileManager().getStringFromConfig("WebServerManager.domain"))) {
+        if (hostHeader == null || !hostHeader.contains(new FileManager().getStringFromConfig("WebServer.domain"))) {
             return newFixedLengthResponse(Response.Status.BAD_REQUEST, "text/plain", "Permanent Redirect to " + new FileManager().getStringFromConfig("WebServerManager.domain") + ":" + Integer.valueOf(new FileManager().getStringFromConfig("WebServerManager.port")));
         }
 
@@ -141,7 +141,7 @@ public class WebServerManager extends NanoHTTPD {
         String mimeType = getMimeType(uri);
         File file = new File(Main.getInstance().getDataFolder() + "/web/" + uri);
         try {
-            if (new FileManager().getBooleanFromConfig("WebServerManager.accessLog")) {
+            if (new FileManager().getBooleanFromConfig("WebServer.accessLog")) {
                 try (FileWriter writer = new FileWriter(logFile, true)) {
                     Map<String, String> headers = session.getHeaders();
                     String referer = headers.get("referer");

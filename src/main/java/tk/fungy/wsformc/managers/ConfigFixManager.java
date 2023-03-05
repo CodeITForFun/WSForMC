@@ -7,29 +7,29 @@ import java.io.IOException;
 public class ConfigFixManager {
     public void autofixConfig() {
         /**
-         * WebServerManager.port to 8080 as Integer
+         * WebServer.port to 8080 as Integer
          */
-        setInt("WebServerManager.port", 8080);
+        setInt("WebServer.port", 8080);
         /**
-         * WebServerManager.isRunning to false as Boolean
+         * WebServer.isRunning to false as Boolean
          */
-        setBoolean("WebServerManager.isRunning", false);
+        setBoolean("WebServer.isRunning", false);
         /**
-         * WebServerManager.domain to "CHANGE_ME" as String
+         * WebServer.domain to "CHANGE_ME" as String
          */
-        setString("WebServerManager.domain", "CHANGE_ME");
+        setString("WebServer.domain", "CHANGE_ME");
         /**
-         * WebServerManager.ssl to false as Boolean
+         * WebServer.ssl to false as Boolean
          */
-        setBoolean("WebServerManager.ssl", false);
+        setBoolean("WebServer.ssl", false);
         /**
-         * WebServerManager.accessLog to true as Boolean
+         * WebServer.accessLog to true as Boolean
          */
-        setBoolean("WebServerManager.accessLog", true);
+        setBoolean("WebServer.accessLog", true);
         /**
-         * WebServerManager.threads to 0 as Integer
+         * WebServer.threads to 0 as Integer
          */
-        setInt("WebServerManager.threads", 0);
+        setInt("WebServer.threads", 0);
         /**
          * No-Permission to "&cYou dont have permissions to do this command" as String
          */
@@ -38,11 +38,6 @@ public class ConfigFixManager {
          * Version to version from pom.xml as String
          */
         setString("Version", Main.getInstance().getDescription().getVersion());
-
-
-        /**
-         * Save the changes
-         */
         save();
     }
 
@@ -58,17 +53,10 @@ public class ConfigFixManager {
             e.printStackTrace();
             Main.getInstance().getLogger().warning("\nEnd of error.");
             Main.getInstance().getLogger().warning("----------------------------------------------------------------");
-
         }
     }
-    private void setInt(String s, int var) {
-        if (!FileManager.config.contains(s)) { FileManager.config.set(s, var); }
-    }
-    private void setString(String s, String var) {
-        if (!FileManager.config.contains(s)) { FileManager.config.set(s, var); }
-    }
-    private void setBoolean(String s, Boolean var) {
-        if (!FileManager.config.contains(s)) { FileManager.config.set(s, var); }
-    }
+    private void setInt(String s, int var) { if (!FileManager.config.contains(s)) { FileManager.config.set(s, var); } save(); }
+    private void setString(String s, String var) { if (!FileManager.config.contains(s)) { FileManager.config.set(s, var); } save(); }
+    private void setBoolean(String s, boolean var) { if (!FileManager.config.contains(s)) { FileManager.config.set(s, var); } save(); }
 
 }

@@ -49,12 +49,12 @@ public class UpdateManager implements Listener {
             if(currentVersion == null) { currentVersion = new FileManager().getStringFromConfig("Version"); }
 
             if (!currentVersion.equals(latestVersion)) {
-                Bukkit.getLogger().warning(ColorUtil.translate("[WebServerManager] A new update is available: " + latestVersion + " Your version is: " + currentVersion + ". Download it here: https://www.spigotmc.org/resources/web-server-for-minecraft.107949/"));
+                Bukkit.getLogger().warning(ColorUtil.translate("[WebServer] A new update is available: " + latestVersion + " Your version is: " + currentVersion + ". Download it here: https://www.spigotmc.org/resources/web-server-for-minecraft.107949/"));
             } else {
-                Bukkit.getLogger().warning(ColorUtil.translate("[WebServerManager] You are using latest version"));
+                Bukkit.getLogger().warning(ColorUtil.translate("[WebServer] You are using latest version"));
             }
         } catch (Exception e) {
-            Bukkit.getLogger().warning(ColorUtil.translate("[WebServerManager] Failed to check for updates: " + e.getMessage()));
+            Bukkit.getLogger().warning(ColorUtil.translate("[WebServer] Failed to check for updates: " + e.getMessage()));
         }
     }
 
