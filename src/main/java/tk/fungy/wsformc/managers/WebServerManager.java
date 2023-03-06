@@ -110,9 +110,9 @@ public class WebServerManager extends NanoHTTPD {
         }
         FileManager.setBooleanInConfig("WebServer.isRunning", true);
         if (new FileManager().getBooleanFromConfig("WebServerManager.ssl")) {
-            Main.getInstance().getLogger().warning("Running! https://" + new FileManager().getStringFromConfig("WebServerManager.domain") + ":" + Integer.valueOf(new FileManager().getStringFromConfig("WebServerManager.port")) + "/");
+            Main.getInstance().getLogger().warning("Running! https://" + new FileManager().getStringFromConfig("WebServer.domain") + ":" + Integer.valueOf(new FileManager().getStringFromConfig("WebServer.port")) + "/");
         } else {
-            Main.getInstance().getLogger().warning("Running! http://" + new FileManager().getStringFromConfig("WebServerManager.domain") + ":" + Integer.valueOf(new FileManager().getStringFromConfig("WebServerManager.port")) + "/");
+            Main.getInstance().getLogger().warning("Running! http://" + new FileManager().getStringFromConfig("WebServer.domain") + ":" + Integer.valueOf(new FileManager().getStringFromConfig("WebServer.port")) + "/");
         }
         Main.tc.reset();
         Main.tc.start();

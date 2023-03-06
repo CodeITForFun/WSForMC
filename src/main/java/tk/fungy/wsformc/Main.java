@@ -28,6 +28,7 @@ public final class Main extends JavaPlugin {
         } catch (UnknownHostException e) {
             getLogger().warning("Failed to found IP of this server, please set this manually.");
         }
+        new ConfigFixManager().autofixConfig();
         new FileManager().removeLogFile();
         getLogger().info("Loading Assets.");
         getInstance().getCommand("wsm").setExecutor(new WSMCommand());

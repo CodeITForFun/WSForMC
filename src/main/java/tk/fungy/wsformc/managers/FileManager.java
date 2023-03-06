@@ -60,7 +60,6 @@ public class FileManager {
         if(!configFile.exists()) {
             Main.getInstance().saveResource("config.yml", true);
             config = new YamlConfiguration().loadConfiguration(configFile);
-            new ConfigFixManager().autofixConfig();
             String domain = getStringFromConfig("WebServer.domain");
             if (domain.equalsIgnoreCase("CHANGE_ME")) {
                 try {
@@ -75,8 +74,6 @@ public class FileManager {
                     ipaddr.replace("[STDOUT]", "");
                 FileManager.setStringInConfig("WebServer.domain", ipaddr);
             }
-            File cfgFile = new File(Main.getInstance().getDataFolder(), "config.yml");
-            config = YamlConfiguration.loadConfiguration(cfgFile);
         }
         if (!logsFolder.exists()) logsFolder.mkdir();
         if(!webFolder.exists()) webFolder.mkdir();

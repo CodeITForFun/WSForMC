@@ -1,11 +1,24 @@
 package tk.fungy.wsformc.managers;
 
+import org.bukkit.Bukkit;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.configuration.file.YamlConfiguration;
 import tk.fungy.wsformc.Main;
 
+import java.io.File;
 import java.io.IOException;
+
+import static tk.fungy.wsformc.managers.FileManager.config;
+import static tk.fungy.wsformc.managers.FileManager.configFile;
 
 public class ConfigFixManager {
     public void autofixConfig() {
+        /**
+         * if config is null, load it
+         */
+        if (config == null) {
+            config = new YamlConfiguration().loadConfiguration(configFile);
+        }
         /**
          * WebServer.port to 8080 as Integer
          */
@@ -39,6 +52,8 @@ public class ConfigFixManager {
          */
         setString("Version", Main.getInstance().getDescription().getVersion());
         save();
+
+        //Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), "restart");
     }
 
     private void save() {
@@ -46,17 +61,17 @@ public class ConfigFixManager {
          * Save the config
          */
         try {
-            FileManager.config.save(FileManager.configFile);
+            config.save(configFile);
         } catch (IOException e) {
             Main.getInstance().getLogger().warning("----------------------------------------------------------------");
-            Main.getInstance().getLogger().warning("Failed to config fix, please report error bottom in our discord!\n");
+            Main.getInstance().getLogger().warning("Failed to save config, please report error bottom in our discord!\n");
             e.printStackTrace();
             Main.getInstance().getLogger().warning("\nEnd of error.");
             Main.getInstance().getLogger().warning("----------------------------------------------------------------");
         }
     }
-    private void setInt(String s, int var) { if (!FileManager.config.contains(s)) { FileManager.config.set(s, var); } save(); }
-    private void setString(String s, String var) { if (!FileManager.config.contains(s)) { FileManager.config.set(s, var); } save(); }
-    private void setBoolean(String s, boolean var) { if (!FileManager.config.contains(s)) { FileManager.config.set(s, var); } save(); }
+    private void setInt(String s, int var) { if (!config.contains(s)) { config.set(s, var); } save(); }
+    private void setString(String s, String var) { if (!config.contains(s)) { config.set(s, var); } save(); }
+    private void setBoolean(String s, boolean var) { if (!config.contains(s)) { config.set(s, var); } save(); }
 
 }
