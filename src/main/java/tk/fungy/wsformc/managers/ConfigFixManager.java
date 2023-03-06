@@ -1,11 +1,8 @@
 package tk.fungy.wsformc.managers;
 
-import org.bukkit.Bukkit;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import tk.fungy.wsformc.Main;
 
-import java.io.File;
 import java.io.IOException;
 
 import static tk.fungy.wsformc.managers.FileManager.config;

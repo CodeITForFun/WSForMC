@@ -195,25 +195,6 @@ public class WSMCommand implements CommandExecutor, TabCompleter {
                     }
                     return true;
 
-                    //
-                    //TODO: Its for future
-                    //
-
-                /*case "type":
-                    switch (args[1]) {
-                        case "cdn":
-                            sender.sendMessage("Setting to cdn...");
-                            FileManager.setStringInConfig("WebServerManager.type", "cdn");
-                            sender.sendMessage("Setted");
-                            return true;
-                        case "origin":
-                            sender.sendMessage("Setting to origin...");
-                            FileManager.setStringInConfig("WebServerManager.type", "origin");
-                            sender.sendMessage("Setted");
-                            return true;
-                    }
-                    return true;*/
-
                 case "status":
                     if (!(Main.tc.running)) timer = "&cOffline";
                     if (Main.tc.running) timer = Main.tc.getTimeCounter();
