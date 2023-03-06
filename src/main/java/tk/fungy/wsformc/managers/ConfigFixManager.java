@@ -63,11 +63,11 @@ public class ConfigFixManager {
         try {
             config.save(configFile);
         } catch (IOException e) {
-            Main.getInstance().getLogger().warning("----------------------------------------------------------------");
-            Main.getInstance().getLogger().warning("Failed to save config, please report error bottom in our discord!\n");
+            Main.getInstance().getLogger().warning("[WebServer] ----------------------------------------------------------------");
+            Main.getInstance().getLogger().warning("[WebServer] Failed to save config, please report bottom error in our discord!\n");
             e.printStackTrace();
-            Main.getInstance().getLogger().warning("\nEnd of error.");
-            Main.getInstance().getLogger().warning("----------------------------------------------------------------");
+            Main.getInstance().getLogger().warning("\n[WebServer] End of error.");
+            Main.getInstance().getLogger().warning("[WebServer] ----------------------------------------------------------------");
         }
     }
     private void setInt(String s, int var) { if (!config.contains(s)) { config.set(s, var); } save(); }

@@ -15,6 +15,7 @@ import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static org.bukkit.Bukkit.getLogger;
 import static tk.fungy.wsformc.managers.FileManager.logsFolder;
 
 public class WebServerManager extends NanoHTTPD {
@@ -94,7 +95,11 @@ public class WebServerManager extends NanoHTTPD {
             try {
                 super.start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
             } catch (IOException e) {
-                Main.getInstance().getLogger().warning("Couldn't start server: " + e.getMessage());
+                getLogger().warning("[WebServer] ----------------------------------------------------------------");
+                getLogger().warning("[WebServer] Couldn't start server, please set this manually.\n");
+                e.printStackTrace();
+                getLogger().warning("\n[WebServer] End of error.");
+                getLogger().warning("[WebServer] ----------------------------------------------------------------");
                 FileManager.setBooleanInConfig("WebServer.isRunning", false);
             }
         } else {
@@ -103,7 +108,11 @@ public class WebServerManager extends NanoHTTPD {
                 try {
                     super.start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
                 } catch (IOException e) {
-                    Main.getInstance().getLogger().warning("Couldn't start server: " + e.getMessage());
+                    getLogger().warning("[WebServer] ----------------------------------------------------------------");
+                    getLogger().warning("[WebServer] Couldn't start server, please set this manually.\n");
+                    e.printStackTrace();
+                    getLogger().warning("\n[WebServer] End of error.");
+                    getLogger().warning("[WebServer] ----------------------------------------------------------------");
                     FileManager.setBooleanInConfig("WebServer.isRunning", false);
                 }
             });
@@ -152,6 +161,11 @@ public class WebServerManager extends NanoHTTPD {
                 } catch (NoSuchFileException e) {
                     if (!logsFolder.exists()) logsFolder.mkdir();
                 } catch (IOException e) {
+                    getLogger().warning("[WebServer] ----------------------------------------------------------------");
+                    getLogger().warning("[WebServer] An internal error occurred, please report bottom error in our discord.\n");
+                    e.printStackTrace();
+                    getLogger().warning("\n[WebServer] End of error.");
+                    getLogger().warning("[WebServer] ----------------------------------------------------------------");
                     throw new RuntimeException(e);
                 }
             }

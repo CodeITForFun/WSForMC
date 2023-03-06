@@ -26,7 +26,11 @@ public final class Main extends JavaPlugin {
         try {
             new FileManager().startup();
         } catch (UnknownHostException e) {
-            getLogger().warning("Failed to found IP of this server, please set this manually.");
+            getLogger().warning("----------------------------------------------------------------");
+            getLogger().warning("Failed to found IP of this server, please report bottom error in our discord.\n");
+            e.printStackTrace();
+            getLogger().warning("\nEnd of error.");
+            getLogger().warning("----------------------------------------------------------------");
         }
         new ConfigFixManager().autofixConfig();
         new FileManager().removeLogFile();
@@ -42,7 +46,11 @@ public final class Main extends JavaPlugin {
             try {
                 new FileManager().startup();
             } catch (UnknownHostException e) {
-                getLogger().warning("Failed to found IP of this server, please set this manually.");
+                getLogger().warning("----------------------------------------------------------------");
+                getLogger().warning("Failed to found IP of this server, please set this manually.\n");
+                e.printStackTrace();
+                getLogger().warning("\nEnd of error.");
+                getLogger().warning("----------------------------------------------------------------");
             }
         }
         FileManager.setStringInConfig("Version", getDescription().getVersion());

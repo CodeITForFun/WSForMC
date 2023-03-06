@@ -19,6 +19,8 @@ import java.io.*;
 
 import java.net.URL;
 
+import static org.bukkit.Bukkit.getLogger;
+
 public class UpdateManager implements Listener {
     private static String currentVersion = Main.getInstance().getDescription().getVersion();
     public static String latestVersion;
@@ -54,7 +56,11 @@ public class UpdateManager implements Listener {
                 Bukkit.getLogger().warning(ColorUtil.translate("[WebServer] You are using latest version"));
             }
         } catch (Exception e) {
-            Bukkit.getLogger().warning(ColorUtil.translate("[WebServer] Failed to check for updates: " + e.getMessage()));
+            getLogger().warning("[WebServer] ----------------------------------------------------------------");
+            getLogger().warning("[WebServer] Failed to check for updates, please report bottom error in our discord.\n");
+            e.printStackTrace();
+            getLogger().warning("\n[WebServer] End of error.");
+            getLogger().warning("[WebServer] ----------------------------------------------------------------");
         }
     }
 

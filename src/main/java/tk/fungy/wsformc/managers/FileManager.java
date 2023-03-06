@@ -9,6 +9,8 @@ import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static org.bukkit.Bukkit.getLogger;
+
 public class FileManager {
 
     public static File configFile = new File(Main.getInstance().getDataFolder(), "config.yml");
@@ -68,7 +70,11 @@ public class FileManager {
                     ipaddr = reader.readLine();
                     Main.getInstance().getLogger().info("IP of device: " + ipaddr);
                 } catch (Exception e) {
-                    Main.getInstance().getLogger().info("Failed to get your public ip. Returned error is: " + e.getMessage());
+                    getLogger().warning("[WebServer] ----------------------------------------------------------------");
+                    getLogger().warning("[WebServer] Failed to get your public ip address, please report bottom error in our discord.\n");
+                    e.printStackTrace();
+                    getLogger().warning("\n[WebServer] End of error.");
+                    getLogger().warning("[WebServer] ----------------------------------------------------------------");
                 }
                     ipaddr.replace(" ", "");
                     ipaddr.replace("[STDOUT]", "");
@@ -118,7 +124,11 @@ public class FileManager {
             is.close();
             os.close();
         } catch (IOException e) {
+            getLogger().warning("[WebServer] ----------------------------------------------------------------");
+            getLogger().warning("[WebServer] Failed to save config file, please report bottom error in our discord.\n");
             e.printStackTrace();
+            getLogger().warning("\n[WebServer] End of error.");
+            getLogger().warning("[WebServer] ----------------------------------------------------------------");
         }
     }
 
