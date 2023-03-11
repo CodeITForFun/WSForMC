@@ -13,6 +13,11 @@
     </strong>
 </h5>
 
+## More Info
+- <a href="https://discord.gg/Y49sdJHJET">Discord</a>
+- <a href="https://bstats.org/plugin/bukkit/WebServer%20For%20Minecraft/17696">bStats</a>
+- <a href="https://www.spigotmc.org/resources/web-server-for-minecraft.107949/">SpigotMC</a>
+
 ##  Wiki Soon
 
 ## Licensing
